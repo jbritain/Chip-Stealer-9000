@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=4 uid="uid://hjfpa0vr7ejp"]
 
-[ext_resource type="Texture2D" uid="uid://cgllnql83r71x" path="res://Scenes/University Campus/textures/overlay.png" id="1_se1qj"]
+[ext_resource type="Texture2D" path="res://Scenes/University Campus/textures/overlay.png" id="1_se1qj"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3mku0"]
 resource_name = "overlay"
@@ -81,7 +81,6 @@ roughness = 0.4
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ayeu"]
 resource_name = "white"
 cull_mode = 2
-albedo_color = Color(1, 1, 1, 1)
 roughness = 0.4
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ibn8f"]
@@ -220,12 +219,12 @@ sky_horizon_color = Color(0.5293, 0.583235, 0.67, 1)
 ground_bottom_color = Color(0.42, 0.42, 0.42, 1)
 ground_horizon_color = Color(0.529412, 0.584314, 0.670588, 1)
 
-[sub_resource type="Sky" id="Sky_ajnqn"]
+[sub_resource type="Sky" id="Sky_w8rn5"]
 sky_material = SubResource("ProceduralSkyMaterial_63l54")
 
 [sub_resource type="Environment" id="Environment_vv8kc"]
 background_mode = 2
-sky = SubResource("Sky_ajnqn")
+sky = SubResource("Sky_w8rn5")
 
 [node name="MapboxCampus" type="StaticBody3D"]
 
