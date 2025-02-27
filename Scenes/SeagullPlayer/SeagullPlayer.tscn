@@ -47,7 +47,7 @@ shadow_mesh = SubResource("ArrayMesh_aa02l")
 size = Vector3(0.115479, 0.132477, 0.420288)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7frmi"]
-size = Vector3(0.115, 0.132, 0.42)
+size = Vector3(0.3, 0.2, 1)
 
 [node name="SeagullPlayer" type="CharacterBody3D"]
 script = ExtResource("1_gsq1o")
@@ -71,4 +71,11 @@ monitorable = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.0183005)
 shape = SubResource("BoxShape3D_7frmi")
 
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0274357, 0.243393)
+shape = SubResource("BoxShape3D_7frmi")
+
 [connection signal="body_entered" from="MobDetector" to="." method="_on_mob_detector_body_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_can_grab_chips"]
