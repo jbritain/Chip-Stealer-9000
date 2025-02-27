@@ -92,11 +92,8 @@ func die():
 	respawn()
 	
 func respawn():
-	transform.origin = respawn_position
-
-	speed = 1
-	throttle = 0
-	velocity = Vector3.ZERO
+	await get_tree().create_timer(1).timeout
+	get_tree().reload_current_scene()
 
 func _on_mob_detector_body_entered(body: Node3D) -> void:
 	if body != self:
