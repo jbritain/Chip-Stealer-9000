@@ -8,6 +8,9 @@ extends CharacterBody3D
 @export var minSpeed: float = 0.1
 @export var maxSpeed: float = 0.1
 @export var mouseSensitivity: float = 100
+@export var respawn_position: Vector3 = Vector3(0, 102.173, 0) 
+@export var respawn_delay: float = 2.0 
+
 
 var targetSpeed: float = 0
 var speed: float = 0
@@ -22,9 +25,11 @@ var lastLerpedMousePos = Vector2.ZERO
 var mouseMotion = Vector2.ZERO
 var throttle = 0
 
+var can_grab = false
+signal hit
+
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
-
 
 func _ready():
 	if not is_multiplayer_authority(): return
@@ -32,11 +37,15 @@ func _ready():
 	
 	
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	self.add_to_group("seagull")
 
 func _input(event):
 	if not is_multiplayer_authority(): return
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
+	if event.is_action_pressed("jump") and can_grab:
+		print("gotcha")
+		self.can_grab = false
 
 func getScreenSpaceMousePos():
 	var absPos = get_viewport().get_mouse_position()
@@ -84,3 +93,34 @@ func _physics_process(delta: float) -> void:
 
 	velocity = transform.basis.z * speed
 	move_and_collide(velocity)
+	
+	var collision = move_and_collide(velocity)
+	if collision:
+		die()
+
+func die():
+	hit.emit()
+	
+	await get_tree().create_timer(respawn_delay).timeout
+
+	respawn()
+	
+func respawn():
+	await get_tree().create_timer(1).timeout
+	position = respawn_position
+	# get_tree().reload_current_scene()
+
+#func _on_mob_detector_body_entered(body: Node3D) -> void:
+	#if body != self:
+		#die()
+		
+func _on_can_grab_chips(body: Node3D):
+	if not is_multiplayer_authority(): return
+	print("collison")
+	if body.is_in_group("student") and body.has_chips:
+		print("its a student and they have chips!")
+		self.can_grab = true
+		
+		var timer = get_tree().create_timer(1.0)
+		await timer.timeout
+		self.can_grab = false
