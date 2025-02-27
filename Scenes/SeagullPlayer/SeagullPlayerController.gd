@@ -8,6 +8,9 @@ extends CharacterBody3D
 @export var minSpeed: float = 1
 @export var maxSpeed: float = 5
 @export var mouseSensitivity: float = 100
+@export var respawn_position: Vector3 = Vector3(0, 102.173, 0) 
+@export var respawn_delay: float = 2.0 
+
 
 var targetSpeed: float = 0
 var speed: float = 0
@@ -21,6 +24,8 @@ var lerpedMousePos = Vector2.ZERO # we lerp this towards the actual mouse positi
 var lastLerpedMousePos = Vector2.ZERO
 var mouseMotion = Vector2.ZERO
 var throttle = 0
+
+signal hit
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
@@ -74,3 +79,22 @@ func _physics_process(delta: float) -> void:
 
 	velocity = transform.basis.z * speed
 	move_and_collide(velocity)
+	
+	var collision = move_and_collide(velocity)
+	if collision:
+		die()
+
+func die():
+	hit.emit()
+	
+	await get_tree().create_timer(respawn_delay).timeout
+
+	respawn()
+	
+func respawn():
+	await get_tree().create_timer(1).timeout
+	get_tree().reload_current_scene()
+
+func _on_mob_detector_body_entered(body: Node3D) -> void:
+	if body != self:
+		die()
