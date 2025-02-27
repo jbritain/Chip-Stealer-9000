@@ -22,6 +22,8 @@ var lastLerpedMousePos = Vector2.ZERO
 var mouseMotion = Vector2.ZERO
 var throttle = 0
 
+signal hit
+
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
@@ -74,3 +76,10 @@ func _physics_process(delta: float) -> void:
 
 	velocity = transform.basis.z * speed
 	move_and_collide(velocity)
+
+func die():
+	hit.emit()
+	queue_free()
+
+func _on_mob_detector_body_entered(body: Node3D) -> void:
+	die()
