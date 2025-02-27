@@ -3,8 +3,12 @@
 [ext_resource type="Script" path="res://Scenes/WalkingPlayer/WalkingPlayerController.gd" id="1_83ikd"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_boxto"]
+radius = 0.3
+height = 1.5
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wysuy"]
+radius = 0.3
+height = 1.5
 
 [node name="WalkingPlayer" type="CharacterBody3D" node_paths=PackedStringArray("camera")]
 script = ExtResource("1_83ikd")
@@ -17,4 +21,4 @@ mesh = SubResource("CapsuleMesh_boxto")
 shape = SubResource("CapsuleShape3D_wysuy")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.736184, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.447962, 0)
