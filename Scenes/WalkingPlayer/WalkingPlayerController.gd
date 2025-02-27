@@ -6,10 +6,19 @@ const SPEED = 20.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.05
 
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
+
 func _ready():
+	if not is_multiplayer_authority(): return
+	
+	$Camera3D.current = true
+	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _input(event):
+	if not is_multiplayer_authority(): return
+	
 	# turn camera with mouse
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		self.rotate_y(deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
@@ -20,6 +29,8 @@ func _input(event):
 		get_tree().quit()
 
 func _physics_process(delta: float) -> void:
+	if not is_multiplayer_authority(): return
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta

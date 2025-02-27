@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://cgxj63ipftcet"]
+[gd_scene load_steps=8 format=4 uid="uid://cgxj63ipftcet"]
 
 [ext_resource type="Script" path="res://Scenes/SeagullPlayer/SeagullPlayerController.gd" id="1_gsq1o"]
 [ext_resource type="Texture2D" uid="uid://clj3e2h1ncra6" path="res://Scenes/SeagullPlayer/Gull tex2.png" id="1_uyw7e"]
@@ -46,6 +46,14 @@ shadow_mesh = SubResource("ArrayMesh_aa02l")
 [sub_resource type="BoxShape3D" id="BoxShape3D_1gcep"]
 size = Vector3(0.115479, 0.132477, 0.420288)
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_e2jst"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="SeagullPlayer" type="CharacterBody3D"]
 script = ExtResource("1_gsq1o")
 
@@ -60,3 +68,6 @@ shape = SubResource("BoxShape3D_1gcep")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0449699, 0.16884)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_e2jst")

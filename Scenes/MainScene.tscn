@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://6rbxp8gmuhsi"]
+
+[ext_resource type="PackedScene" uid="uid://dcih1v7r4ul8l" path="res://Scenes/MainMenu/MainMenu.tscn" id="1_dayix"]
+
+[node name="MainScene" type="Node3D"]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" parent="UI" instance=ExtResource("1_dayix")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 462.0
+offset_top = 229.0
+offset_right = -462.0
+offset_bottom = -228.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/WalkingPlayer/WalkingPlayer.tscn", "res://Scenes/SeagullPlayer/SeagullPlayer.tscn")
+spawn_path = NodePath("..")

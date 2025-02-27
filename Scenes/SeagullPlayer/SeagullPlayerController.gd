@@ -5,8 +5,8 @@ extends CharacterBody3D
 @export var maxPitchSpeed: float = PI/2 # how quickly the plane can pitch, in radians per second
 @export var maxRollSpeed: float = PI
 @export var maxYawSpeed: float = PI/2
-@export var minSpeed: float = 1
-@export var maxSpeed: float = 5
+@export var minSpeed: float = 0.1
+@export var maxSpeed: float = 0.1
 @export var mouseSensitivity: float = 100
 
 var targetSpeed: float = 0
@@ -22,10 +22,19 @@ var lastLerpedMousePos = Vector2.ZERO
 var mouseMotion = Vector2.ZERO
 var throttle = 0
 
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
+
+
 func _ready():
+	if not is_multiplayer_authority(): return
+	$Camera3D.current = true
+	
+	
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 func _input(event):
+	if not is_multiplayer_authority(): return
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
 
@@ -51,6 +60,7 @@ func getMouseMotion():
 	get_viewport().warp_mouse(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))#floor(get_viewport().size * 0.5))
 
 func _physics_process(delta: float) -> void:
+	if not is_multiplayer_authority(): return
 	if Input.is_action_pressed("throttle_up") and throttle <= 1.0:
 		throttle += throttleSpeed * delta
 	elif Input.is_action_pressed("throttle_down") and throttle >= 0.0:
