@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://cssnuewtcu1n3"]
 
 [ext_resource type="PackedScene" uid="uid://hjfpa0vr7ejp" path="res://Scenes/University Campus/mapboxCampus.tscn" id="1_6pw15"]
-[ext_resource type="PackedScene" uid="uid://clgerp1c63v3" path="res://Scenes/WalkingPlayer/WalkingPlayer.tscn" id="2_i8b83"]
+[ext_resource type="PackedScene" uid="uid://clgerp1c63v3" path="res://Scenes/WalkingPlayer/WalkingPlayer.tscn" id="2_pl6rv"]
 
 [node name="UniversityCampus" type="Node3D"]
 
 [node name="MapboxCampus" parent="." instance=ExtResource("1_6pw15")]
 
-[node name="WalkingPlayer" parent="." instance=ExtResource("2_i8b83")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.44206, 0)
+[node name="WalkingPlayer" parent="." instance=ExtResource("2_pl6rv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -158.092, 75.6079, 11.2642)
