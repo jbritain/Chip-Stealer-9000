@@ -26,14 +26,21 @@ var mouseMotion = Vector2.ZERO
 var throttle = 0
 
 var can_grab = false
-
 signal hit
 
+func _enter_tree():
+	set_multiplayer_authority(str(name).to_int())
+
 func _ready():
+	if not is_multiplayer_authority(): return
+	$Camera3D.current = true
+	
+	
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	self.add_to_group("seagull")
 
 func _input(event):
+	if not is_multiplayer_authority(): return
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
 	if event.is_action_pressed("jump") and can_grab:
@@ -62,6 +69,7 @@ func getMouseMotion():
 	get_viewport().warp_mouse(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))#floor(get_viewport().size * 0.5))
 
 func _physics_process(delta: float) -> void:
+	if not is_multiplayer_authority(): return
 	if Input.is_action_pressed("throttle_up") and throttle <= 1.0:
 		throttle += throttleSpeed * delta
 	elif Input.is_action_pressed("throttle_down") and throttle >= 0.0:
@@ -99,13 +107,15 @@ func die():
 	
 func respawn():
 	await get_tree().create_timer(1).timeout
-	get_tree().reload_current_scene()
+	position = respawn_position
+	# get_tree().reload_current_scene()
 
 #func _on_mob_detector_body_entered(body: Node3D) -> void:
 	#if body != self:
 		#die()
 		
 func _on_can_grab_chips(body: Node3D):
+	if not is_multiplayer_authority(): return
 	print("collison")
 	if body.is_in_group("student") and body.has_chips:
 		print("its a student and they have chips!")

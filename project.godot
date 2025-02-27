@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Chip Stealer 9000"
-run/main_scene="res://Scenes/University Campus/University Campus.tscn"
+run/main_scene="res://Scenes/MainScene.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GlobalHandler="*res://GlobalHandler.gd"
 
 [input]
 
