@@ -30,6 +30,8 @@ func _input(event):
 
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
+	if event.is_action_pressed("ui_accept"):
+		GlobalHandler.announce_chips_stolen()
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return

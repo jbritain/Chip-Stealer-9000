@@ -70,7 +70,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00134277, 0.0155182, -0.022
 shape = SubResource("BoxShape3D_1gcep")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.0449699, 0.16884)
+transform = Transform3D(-1, -9.72231e-15, -8.74228e-08, 6.56853e-09, 0.997173, -0.0751353, 8.71757e-08, -0.0751353, -0.997173, 0, 0.03727, -0.388028)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_e2jst")

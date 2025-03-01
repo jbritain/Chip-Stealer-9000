@@ -3,9 +3,12 @@ extends Node
 const Map = preload("res://Scenes/University Campus/University Campus.tscn")
 const WalkingPlayer = preload("res://Scenes/WalkingPlayer/WalkingPlayer.tscn")
 const SeagullPlayer = preload("res://Scenes/SeagullPlayer/SeagullPlayer.tscn")
+const GameHud = preload("res://Scenes/GameHud/GameHud.tscn")
 
 var is_seagull = false
 var enet_peer = ENetMultiplayerPeer.new()
+var walking_score = 0
+var seagull_score = 0
 
 @rpc("any_peer", "reliable")
 func handle_connection_info(peer_is_seagull):
@@ -21,6 +24,7 @@ func request_connection_info():
 
 func init_game_world():
 	get_tree().get_root().add_child(Map.instantiate())
+	get_tree().get_root().add_child(GameHud.instantiate())
 	
 func add_walking_player(peer_id):
 	if multiplayer.is_server():
@@ -42,3 +46,26 @@ func add_seagull_player(peer_id):
 
 func handle_connected_peer(peer_id):
 	rpc_id(peer_id, "request_connection_info")
+	
+func announce_chips_stolen():
+	if multiplayer.is_server():
+		server_chips_stolen()
+	else:
+		rpc_id(1, "server_chips_stolen") # apparently 1 is always server
+
+# This function should only run on the server i think
+@rpc("any_peer", "reliable")		
+func server_chips_stolen():
+	print("chips stolen function")
+	seagull_score += 1
+	print("seagull score increase to",seagull_score)
+	rpc("client_update_score", walking_score, seagull_score)
+	client_update_score(walking_score,seagull_score)
+
+@rpc("authority","reliable")
+func client_update_score(w,s):
+	print("received new score from server")
+	var hud = get_tree().get_root().find_child("GameHud",true,false)
+	hud.update_score_display(w, s)
+
+	

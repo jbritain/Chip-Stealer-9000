@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhxc0xq4xdjs7"]
+
+[ext_resource type="Script" path="res://Scenes/GameHud/GameHud.gd" id="1_t61rx"]
+
+[node name="GameHud" type="CanvasLayer"]
+script = ExtResource("1_t61rx")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
+layout_mode = 2
