@@ -64,6 +64,13 @@ func add_seagull_player(peer_id):
 func handle_connected_peer(peer_id):
 	rpc_id(peer_id, "request_connection_info")
 	
+func handle_disconnected_peer(peer_id):
+	var player = get_node_or_null("/root/MainScene/" + str(peer_id))
+	if not player: return
+	
+	print("player disconnected")
+	player.queue_free()
+	
 func announce_chips_stolen():
 	if multiplayer.is_server():
 		server_chips_stolen()

@@ -23,6 +23,7 @@ func _on_host_button_pressed() -> void:
 	GlobalHandler.enet_peer.create_server(9000)
 	multiplayer.multiplayer_peer = GlobalHandler.enet_peer
 	multiplayer.peer_connected.connect(GlobalHandler.handle_connected_peer)
+	multiplayer.peer_disconnected.connect(GlobalHandler.handle_disconnected_peer)
 	GlobalHandler.init_game_world()
 	if GlobalHandler.is_seagull:
 		GlobalHandler.add_seagull_player(multiplayer.get_unique_id())
