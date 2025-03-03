@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://v6i61qm0fkam"]
 
-[ext_resource type="Script" path="res://Scenes/Checkpoints/ChipDeliveryPoint.gd" id="1_x2m0c"]
+[ext_resource type="Script" uid="uid://uqmti2dovpqj" path="res://Scenes/Checkpoints/ChipDeliveryPoint.gd" id="1_x2m0c"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_akfyn"]
 top_radius = 1.0

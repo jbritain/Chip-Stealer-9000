@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dcih1v7r4ul8l"]
 
-[ext_resource type="Script" path="res://Scenes/MainMenu/MainMenuHandler.gd" id="1_pt1qs"]
+[ext_resource type="Script" uid="uid://b0qbbufbr2ib3" path="res://Scenes/MainMenu/MainMenuHandler.gd" id="1_pt1qs"]
 
 [node name="MainMenu" type="PanelContainer"]
 size_flags_horizontal = 4

@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=4 uid="uid://cgxj63ipftcet"]
 
-[ext_resource type="Script" path="res://Scenes/SeagullPlayer/SeagullPlayerController.gd" id="1_gsq1o"]
+[ext_resource type="Script" uid="uid://ch1ldbhetnta3" path="res://Scenes/SeagullPlayer/SeagullPlayerController.gd" id="1_gsq1o"]
 [ext_resource type="Texture2D" uid="uid://clj3e2h1ncra6" path="res://Scenes/SeagullPlayer/Gull tex2.png" id="1_uyw7e"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_il5h6"]
