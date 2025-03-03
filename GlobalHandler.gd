@@ -120,18 +120,17 @@ func server_chips_delivered():
 		server_start_round()
 	
 
-
+@rpc("reliable", "any_peer")
 func server_start_round():
 	if not multiplayer.is_server():
 		return
-	# Give someone chips
-	var students = get_tree().get_nodes_in_group("student")
-	for student in students:
-		student.has_chips = true
+	
+	rpc("client_get_chips")
 	
 	# Set scores back to 0
 	student_score = 0
 	seagull_score = 0
+	rpc("client_update_score", student_score, seagull_score)
 	
 	# TODO: Start a timer for X minutes before round ends
 
@@ -145,3 +144,12 @@ func client_update_score(w,s):
 	print("received new score from server")
 	var hud = get_tree().get_root().find_child("GameHud",true,false)
 	hud.update_score_display(w, s)
+	
+@rpc("any_peer", "reliable", "call_local")
+func client_get_chips():
+	var player = get_current_player()
+	if player.is_in_group("student") and player.is_multiplayer_authority():
+		player.has_chips = true
+	
+func get_current_player():
+	return get_node("/root/MainScene/%s" % [multiplayer.get_unique_id()])
