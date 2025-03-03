@@ -6,7 +6,11 @@
 [node name="UniversityCampus" type="Node3D"]
 
 [node name="MapboxCampus" parent="." instance=ExtResource("1_6pw15")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1282, -53.8778, 31.2163)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -70.3086, 0)
 
 [node name="ChipDeliveryPoint" parent="." instance=ExtResource("2_j3u86")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.40264, -33.8874, 39.8167)
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.34346, 17.3191, 167.491)
+size = Vector3(46.8584, 34.8778, 51.6573)
