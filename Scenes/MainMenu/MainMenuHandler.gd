@@ -13,7 +13,7 @@ func _process(delta: float) -> void:
 
 
 func _on_join_button_pressed() -> void:
-	GlobalHandler.enet_peer.create_client("localhost", 9000)
+	GlobalHandler.enet_peer.create_client($MarginContainer/VBoxContainer/addressLine.text, 9000)
 	multiplayer.multiplayer_peer = GlobalHandler.enet_peer
 	GlobalHandler.init_game_world()
 	hide()
