@@ -39,8 +39,6 @@ func _input(event):
 
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
-	if event.is_action_pressed("ui_accept"):
-		GlobalHandler.announce_chips_stolen()
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
@@ -63,6 +61,15 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+func deliver_chips():
+	if not is_multiplayer_authority(): return
+	GlobalHandler.announce_chips_delivered()
+	has_chips = false
+	
+func get_chips_stolen():
+	GlobalHandler.announce_chips_stolen()
+	has_chips = false
 
 #
 #func _input(event):

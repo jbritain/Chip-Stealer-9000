@@ -68,9 +68,16 @@ func announce_chips_stolen():
 	if multiplayer.is_server():
 		server_chips_stolen()
 	else:
-		rpc_id(1, "server_chips_stolen") # apparently 1 is always server
+		rpc_id(1, "server_chips_stolen") # apparently 1 is always server indeed it is alan
+		
+func announce_chips_delivered():
+	if multiplayer.is_server():
+		server_chips_delivered()
+	else:
+		rpc_id(1, "server_chips_delivered") # apparently 1 is always server indeed it is alan
 
-# This function should only run on the server i think
+# This function should only run on the server i think 
+# yes alan that is correct
 @rpc("any_peer", "reliable")		
 func server_chips_stolen():
 	if not multiplayer.is_server():
@@ -80,6 +87,38 @@ func server_chips_stolen():
 	print("seagull score increase to",seagull_score)
 	rpc("client_update_score", student_score, seagull_score)
 	client_update_score(student_score,seagull_score)
+	
+	var no_chips_left = true
+	var students = get_tree().get_nodes_in_group("student")
+	for student in students:
+		if student.has_chips:
+			no_chips_left = false
+			return
+			
+	if no_chips_left:
+		print("Starting new round...")
+		server_start_round()
+		
+@rpc("any_peer", "reliable")
+func server_chips_delivered():
+	if not multiplayer.is_server():
+		return
+	print("chips delivered function")
+	student_score += 1
+	print("student score increase to ", student_score)
+	rpc("client_update_score", student_score, seagull_score)
+	
+	var no_chips_left = true
+	var students = get_tree().get_nodes_in_group("student")
+	for student in students:
+		if student.has_chips:
+			no_chips_left = false
+			return
+			
+	if no_chips_left:
+		print("Starting new round...")
+		server_start_round()
+	
 
 
 func server_start_round():
@@ -101,7 +140,7 @@ func client_start_round():
 	pass
 		
 
-@rpc("authority","reliable")
+@rpc("authority","reliable", "call_local")
 func client_update_score(w,s):
 	print("received new score from server")
 	var hud = get_tree().get_root().find_child("GameHud",true,false)

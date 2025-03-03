@@ -26,6 +26,7 @@ var mouseMotion = Vector2.ZERO
 var throttle = 0
 
 var can_grab = false
+var grabbable_student : Node3D # who can we nick chips from?
 signal hit
 
 func _enter_tree():
@@ -45,6 +46,9 @@ func _input(event):
 		get_tree().quit()
 	if event.is_action_pressed("jump") and can_grab:
 		print("gotcha")
+		# in this case we decide if we have the authority to steal the chips, but the student makes the call since it's their value being modified
+		grabbable_student.get_chips_stolen()
+		
 		self.can_grab = false
 
 func getScreenSpaceMousePos():
@@ -120,6 +124,7 @@ func _on_can_grab_chips(body: Node3D):
 	if body.is_in_group("student") and body.has_chips:
 		print("its a student and they have chips!")
 		self.can_grab = true
+		self.grabbable_student = body
 		
 		var timer = get_tree().create_timer(1.0)
 		await timer.timeout
