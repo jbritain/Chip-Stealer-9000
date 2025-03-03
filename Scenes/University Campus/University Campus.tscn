@@ -1,8 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://cssnuewtcu1n3"]
+[gd_scene load_steps=3 format=3 uid="uid://cssnuewtcu1n3"]
 
 [ext_resource type="PackedScene" uid="uid://hjfpa0vr7ejp" path="res://Scenes/University Campus/mapboxCampus.tscn" id="1_6pw15"]
+[ext_resource type="PackedScene" uid="uid://v6i61qm0fkam" path="res://Scenes/Checkpoints/ChipDeliveryPoint.tscn" id="2_j3u86"]
 
 [node name="UniversityCampus" type="Node3D"]
 
 [node name="MapboxCampus" parent="." instance=ExtResource("1_6pw15")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -94.7343, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1282, -53.8778, 31.2163)
+
+[node name="ChipDeliveryPoint" parent="." instance=ExtResource("2_j3u86")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.40264, -33.8874, 39.8167)
