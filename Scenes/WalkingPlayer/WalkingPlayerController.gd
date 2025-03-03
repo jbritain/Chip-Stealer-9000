@@ -5,8 +5,17 @@ extends CharacterBody3D
 const SPEED = 20.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.05
-@export var has_chips = true
 
+@export var has_chips = false:
+	set(value):
+		if has_chips != value:
+			if value == false:
+				print("lost me chips!",name)	
+			else:
+				print("got some chips!",name)
+			
+			has_chips = value
+			
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
 
