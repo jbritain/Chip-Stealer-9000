@@ -67,9 +67,16 @@ func deliver_chips():
 	GlobalHandler.announce_chips_delivered()
 	has_chips = false
 	
+@rpc("any_peer","reliable")
 func get_chips_stolen():
-	GlobalHandler.announce_chips_stolen()
-	has_chips = false
+	if is_multiplayer_authority():
+		has_chips = false
+		GlobalHandler.announce_chips_stolen()
+	else:
+		var client_id = int(String(name))
+		rpc_id(client_id,"get_chips_stolen")
+	
+	
 
 #
 #func _input(event):
