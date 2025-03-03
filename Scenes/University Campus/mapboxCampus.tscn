@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://hjfpa0vr7ejp"]
+[gd_scene load_steps=5 format=3 uid="uid://hjfpa0vr7ejp"]
 
-[ext_resource type="PackedScene" uid="uid://v6i61qm0fkam" path="res://Scenes/Checkpoints/ChipDeliveryPoint.tscn" id="1_tgxvw"]
 [ext_resource type="PackedScene" uid="uid://dn4fd7karqive" path="res://Scenes/University Campus/mapboxCampus.blend" id="1_vo1wc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_63l54"]
@@ -17,9 +16,6 @@ background_mode = 2
 sky = SubResource("Sky_w8rn5")
 
 [node name="MapboxCampus" type="StaticBody3D"]
-
-[node name="ChipDeliveryPoint" parent="." instance=ExtResource("1_tgxvw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.92077, 20.0366, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vv8kc")
