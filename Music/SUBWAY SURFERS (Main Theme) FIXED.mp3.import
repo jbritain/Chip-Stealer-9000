@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c2f3bx2u3n1rv"
+path="res://.godot/imported/SUBWAY SURFERS (Main Theme) FIXED.mp3-163a8ffa65d6bc6ab5c92c78600f5b7e.mp3str"
+
+[deps]
+
+source_file="res://Music/SUBWAY SURFERS (Main Theme) FIXED.mp3"
+dest_files=["res://.godot/imported/SUBWAY SURFERS (Main Theme) FIXED.mp3-163a8ffa65d6bc6ab5c92c78600f5b7e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://74tdok8etmfl"]
+[gd_scene load_steps=3 format=3 uid="uid://74tdok8etmfl"]
 
 [ext_resource type="PackedScene" uid="uid://dcih1v7r4ul8l" path="res://Scenes/MainMenu/MainMenu.tscn" id="1_dayix"]
+[ext_resource type="AudioStream" uid="uid://c2f3bx2u3n1rv" path="res://Music/SUBWAY SURFERS (Main Theme) FIXED.mp3" id="2_tr2i4"]
 
 [node name="MainScene" type="Node3D"]
 
@@ -20,3 +21,8 @@ grow_vertical = 2
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://clgerp1c63v3", "uid://cgxj63ipftcet", "uid://v6i61qm0fkam")
 spawn_path = NodePath("..")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_tr2i4")
+volume_db = -11.243
+autoplay = true
