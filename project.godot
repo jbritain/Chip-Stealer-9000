@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 GlobalHandler="*res://GlobalHandler.gd"
 
+[global_group]
+
+student_spawn_points=""
+
 [input]
 
 walk_forward={
