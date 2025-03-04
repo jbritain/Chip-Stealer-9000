@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://v6i61qm0fkam"]
+[gd_scene load_steps=6 format=3 uid="uid://v6i61qm0fkam"]
 
 [ext_resource type="Script" uid="uid://uqmti2dovpqj" path="res://Scenes/Checkpoints/ChipDeliveryPoint.gd" id="1_x2m0c"]
 
@@ -16,6 +16,11 @@ albedo_color = Color(0, 1, 1, 0.427451)
 height = 4.0
 radius = 1.0
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_val52"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="ChipDeliveryPoint" type="Node3D"]
 script = ExtResource("1_x2m0c")
 
@@ -29,5 +34,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_1vowj")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 shape = SubResource("CylinderShape3D_eyjnm")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_val52")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -4,11 +4,14 @@ const Map = preload("res://Scenes/University Campus/University Campus.tscn")
 const WalkingPlayer = preload("res://Scenes/WalkingPlayer/WalkingPlayer.tscn")
 const SeagullPlayer = preload("res://Scenes/SeagullPlayer/SeagullPlayer.tscn")
 const GameHud = preload("res://Scenes/GameHud/GameHud.tscn")
+const ChipDeliveryPoint = preload("res://Scenes/Checkpoints/ChipDeliveryPoint.tscn")
 
 var is_seagull = false
 var enet_peer = ENetMultiplayerPeer.new()
 var student_score = 0
 var seagull_score = 0
+
+var chip_delivery_point
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_U:
@@ -42,6 +45,8 @@ func request_connection_info():
 func init_game_world():
 	get_tree().get_root().add_child(Map.instantiate())
 	get_tree().get_root().add_child(GameHud.instantiate())
+	chip_delivery_point = ChipDeliveryPoint.instantiate()
+	get_tree().get_root().add_child(chip_delivery_point)
 	
 func add_walking_player(peer_id):
 	if multiplayer.is_server():
@@ -132,12 +137,20 @@ func server_start_round():
 	if not multiplayer.is_server():
 		return
 	
+	# give all walking players chips
 	rpc("client_get_chips")
 	
 	# Set scores back to 0
 	student_score = 0
 	seagull_score = 0
 	rpc("client_update_score", student_score, seagull_score)
+	
+	# put a chip delivery point at a random cafe
+	var student_spawn_points = get_tree().get_nodes_in_group("student_spawn_points")
+	var random_spawn_point = student_spawn_points.pick_random()
+	print("placing chip delivery point at " + random_spawn_point.name)
+	chip_delivery_point.position = random_spawn_point.position
+	
 	
 	# TODO: Start a timer for X minutes before round ends
 

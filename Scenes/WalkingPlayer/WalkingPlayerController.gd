@@ -64,8 +64,8 @@ func _physics_process(delta: float) -> void:
 	
 func deliver_chips():
 	if not is_multiplayer_authority(): return
-	GlobalHandler.announce_chips_delivered()
 	has_chips = false
+	GlobalHandler.announce_chips_delivered()
 	
 @rpc("any_peer","reliable")
 func get_chips_stolen():

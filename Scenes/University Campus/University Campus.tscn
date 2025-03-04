@@ -1,7 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cssnuewtcu1n3"]
 
 [ext_resource type="PackedScene" uid="uid://hjfpa0vr7ejp" path="res://Scenes/University Campus/mapboxCampus.tscn" id="1_6pw15"]
-[ext_resource type="PackedScene" uid="uid://v6i61qm0fkam" path="res://Scenes/Checkpoints/ChipDeliveryPoint.tscn" id="2_j3u86"]
 [ext_resource type="PackedScene" uid="uid://rsu1faqbmv2n" path="res://Scenes/Checkpoints/Cafe.tscn" id="3_xtx6s"]
 
 [node name="UniversityCampus" type="Node3D"]
@@ -9,26 +8,23 @@
 [node name="MapboxCampus" parent="." instance=ExtResource("1_6pw15")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1282, -53.8778, 31.2163)
 
-[node name="ChipDeliveryPoint" parent="." instance=ExtResource("2_j3u86")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.40264, -33.8874, 39.8167)
-
 [node name="JGRoss" parent="." instance=ExtResource("3_xtx6s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0099, -32.499, 12.6238)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0099, -33.2615, 12.6238)
 
 [node name="McRobertCafe" parent="." instance=ExtResource("3_xtx6s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 272.955, -34.6041, -28.1884)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 272.955, -36.2967, -28.1884)
 
 [node name="Kilau" parent="." instance=ExtResource("3_xtx6s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.7848, -31.3324, 22.424)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.7848, -33.4354, 22.424)
 
 [node name="Shelter" parent="." instance=ExtResource("3_xtx6s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.7318, -31.2073, -139.492)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.7318, -33.6787, -139.492)
 
 [node name="LibraryCafe" parent="." instance=ExtResource("3_xtx6s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -169.055, -28.7685, 45.1341)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -169.055, -30.4038, 45.1341)
 
 [node name="StudentUnion" parent="." instance=ExtResource("3_xtx6s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.8811, -28.4788, -116.513)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.8811, -32.3896, -116.513)
 
 [node name="TaylorCafe" parent="." instance=ExtResource("3_xtx6s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 99.1231, -34.8554, 72.4935)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 99.1231, -36.6277, 72.4935)
