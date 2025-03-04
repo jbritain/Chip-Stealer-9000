@@ -36,8 +36,7 @@ func _ready():
 	if not is_multiplayer_authority(): return
 	$Camera3D.current = true
 	
-	
-	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	self.add_to_group("seagull")
 
 func _input(event):
@@ -57,20 +56,20 @@ func getScreenSpaceMousePos():
 	
 	return absPos / screenSize
 
-
-func getMouseMotion():
-	# every frame we reset the position of the mouse to 0.5, 0.5, so the difference between this and the actual position is the motion of the mouse
-	var mousePos = getScreenSpaceMousePos()
-	continuedMousePos += mousePos - Vector2(0.5, 0.5) #Vector2(stepify(mousePos.x, 0.1), stepify(mousePos.y, 0.1)) - Vector2(0.5, 0.5)
-	lastLerpedMousePos = lerpedMousePos
-	lerpedMousePos = lerp(lastLerpedMousePos, continuedMousePos, 0.05)
-	mouseMotion = lerpedMousePos - lastLerpedMousePos
-
-#	print(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))
-#	print(get_viewport().get_mouse_position())
-#	print("---")
-
-	get_viewport().warp_mouse(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))#floor(get_viewport().size * 0.5))
+#
+#func getMouseMotion():
+	## every frame we reset the position of the mouse to 0.5, 0.5, so the difference between this and the actual position is the motion of the mouse
+	#var mousePos = getScreenSpaceMousePos()
+	#continuedMousePos += mousePos - Vector2(0.5, 0.5) #Vector2(stepify(mousePos.x, 0.1), stepify(mousePos.y, 0.1)) - Vector2(0.5, 0.5)
+	#lastLerpedMousePos = lerpedMousePos
+	#lerpedMousePos = lerp(lastLerpedMousePos, continuedMousePos, 0.05)
+	#mouseMotion = lerpedMousePos - lastLerpedMousePos
+#
+##	print(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))
+##	print(get_viewport().get_mouse_position())
+##	print("---")
+#
+	#get_viewport().warp_mouse(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))#floor(get_viewport().size * 0.5))
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
@@ -78,13 +77,31 @@ func _physics_process(delta: float) -> void:
 		throttle += throttleSpeed * delta
 	elif Input.is_action_pressed("throttle_down") and throttle >= 0.0:
 		throttle -= throttleSpeed * delta
+	if Input.is_key_pressed(KEY_W):
+		pitch += 0.03 * delta
+	elif Input.is_key_pressed(KEY_S):
+		pitch -= 0.03 * delta
+	else:
+		pitch = 0
+	if Input.is_key_pressed(KEY_Q):
+		roll -= 0.03 * delta
+	elif Input.is_key_pressed(KEY_E):
+		roll += 0.03 * delta
+	else:
+		roll = 0
+	if Input.is_key_pressed(KEY_A):
+		yaw += 0.03 * delta
+	elif Input.is_key_pressed(KEY_D):
+		yaw -= 0.03 * delta
+	else:
+		yaw = 0
 
-	getMouseMotion()
+	#getMouseMotion()
 
-	pitch = mouseMotion.y * delta * maxPitchSpeed * mouseSensitivity
+	#pitch = mouseMotion.y * delta * maxPitchSpeed * mouseSensitivity
 		
 	#roll = lerp(roll, Input.get_axis("roll_left", "roll_right") * delta * maxRollSpeed, 0.1)
-	roll = mouseMotion.x * delta * maxRollSpeed * mouseSensitivity
+	#roll = mouseMotion.x * delta * maxRollSpeed * mouseSensitivity
 
 	transform.basis = transform.basis.rotated(transform.basis.x.normalized(), pitch)
 	transform.basis = transform.basis.rotated(transform.basis.y.normalized(), yaw)
