@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cssnuewtcu1n3"]
+[gd_scene load_steps=4 format=3 uid="uid://cssnuewtcu1n3"]
 
 [ext_resource type="PackedScene" uid="uid://hjfpa0vr7ejp" path="res://Scenes/University Campus/mapboxCampus.tscn" id="1_6pw15"]
+[ext_resource type="PackedScene" uid="uid://3cbsffjgp8s8" path="res://Scenes/Checkpoints/LectureTheatre.tscn" id="3_kfcfc"]
 [ext_resource type="PackedScene" uid="uid://rsu1faqbmv2n" path="res://Scenes/Checkpoints/Cafe.tscn" id="3_xtx6s"]
 
 [node name="UniversityCampus" type="Node3D"]
@@ -8,23 +9,56 @@
 [node name="MapboxCampus" parent="." instance=ExtResource("1_6pw15")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1282, -53.8778, 31.2163)
 
-[node name="JGRoss" parent="." instance=ExtResource("3_xtx6s")]
+[node name="JG Ross" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0099, -33.2615, 12.6238)
 
-[node name="McRobertCafe" parent="." instance=ExtResource("3_xtx6s")]
+[node name="Aberbean" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 272.955, -36.2967, -28.1884)
 
 [node name="Kilau" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.7848, -33.4354, 22.424)
 
-[node name="Shelter" parent="." instance=ExtResource("3_xtx6s")]
+[node name="Shelter Cafe" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.7318, -33.6787, -139.492)
 
-[node name="LibraryCafe" parent="." instance=ExtResource("3_xtx6s")]
+[node name="Library Cafe" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -169.055, -30.4038, 45.1341)
 
-[node name="StudentUnion" parent="." instance=ExtResource("3_xtx6s")]
+[node name="Student Union" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.8811, -32.3896, -116.513)
 
-[node name="TaylorCafe" parent="." instance=ExtResource("3_xtx6s")]
+[node name="Food Story" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 99.1231, -36.6277, 72.4935)
+
+[node name="Fraser Noble" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -121.796, -31.8806, 21.4896)
+
+[node name="Meston (South)" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -102.587, -36.3561, 150.179)
+
+[node name="Meston (North)" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -111.976, -32.1755, 46.0846)
+
+[node name="Science Teaching Hub" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -180.038, -33.7242, -83.9878)
+
+[node name="St Marys" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.275, -33.4366, -72.0656)
+
+[node name="Taylor" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 115.861, -37.758, 72.4286)
+
+[node name="New Kings" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.4187, -35.3363, 114.176)
+
+[node name="Kings" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 99.3929, -34.6197, 206.654)
+
+[node name="Regent" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 203.555, -41.1724, 119.299)
+
+[node name="William Guild" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 191.456, -37.2737, 23.9821)
+
+[node name="MacRobert" parent="." instance=ExtResource("3_kfcfc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 272.811, -36.1947, -32.3257)

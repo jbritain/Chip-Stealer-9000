@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://3cbsffjgp8s8"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sbudg"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 1.0
+
+[node name="LectureTheatre" type="Node3D" groups=["student_delivery_points"]]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_sbudg")
