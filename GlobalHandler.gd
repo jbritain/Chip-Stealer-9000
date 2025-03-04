@@ -149,21 +149,25 @@ func server_start_round():
 	var student_spawn_points = get_tree().get_nodes_in_group("student_spawn_points")
 	var random_spawn_point = student_spawn_points.pick_random()
 	print("placing spawn point at " + random_spawn_point.name)
-	rpc("client_student_go_to_spawn_point", random_spawn_point.position)
-	
+
 	var student_delivery_points = get_tree().get_nodes_in_group("student_delivery_points")
 	var random_delivery_point = student_delivery_points.pick_random()
 	print("placing chip delivery point at " + random_delivery_point.name)
 	chip_delivery_point.position = random_delivery_point.position
 	
+	rpc("client_start_round", random_spawn_point.position, chip_delivery_point.position)
 	
 	# TODO: Start a timer for X minutes before round ends
 
-@rpc("authority","reliable")
-func client_start_round():
-	pass
+@rpc("any_peer","reliable","call_local")
+func client_start_round(spawn_pos, delivery_pos):
+	var player = get_current_player()
+	if is_seagull:
+		player.position = delivery_pos
+		player.position.y += 100
+	else:
+		player.position = spawn_pos
 		
-
 @rpc("authority","reliable", "call_local")
 func client_update_score(w,s):
 	print("received new score from server")
@@ -175,12 +179,6 @@ func client_get_chips():
 	var player = get_current_player()
 	if player.is_in_group("student") and player.is_multiplayer_authority():
 		player.has_chips = true
-		
-@rpc("any_peer", "reliable", "call_local")
-func client_student_go_to_spawn_point(pos):
-	var player = get_current_player()
-	if player.is_in_group("student"):
-		player.position = pos
 	
 func get_current_player():
 	return get_node("/root/MainScene/%s" % [multiplayer.get_unique_id()])
