@@ -81,26 +81,30 @@ func _physics_process(delta: float) -> void:
 	var camera_target_look_pos = global_position
 	
 	if Input.is_action_pressed("pan_camera"):
-		var rotated_basis = global_transform.basis
-		rotated_basis = rotated_basis.rotated(Vector3(1, 0, 0), mouse_position_since_clicked.y)
-		rotated_basis = rotated_basis.rotated(Vector3(0, 1, 0), -mouse_position_since_clicked.x)
-		camera_target_look_pos = global_position + 100.0 * rotated_basis.z
+		$Camera3D.top_level = false
+		$Camera3D.position = Vector3.ZERO
+		$Camera3D.rotation = rotation
+		$Camera3D.look_at(position + Vector3.DOWN + transform.basis.z * 0.01)
 	else:
+		$Camera3D.top_level = true
 		mouse_position_since_clicked = Vector2.ZERO
+		var actual_rotation = $Camera3D.global_rotation
+		$Camera3D.look_at(camera_target_look_pos)
+		var look_at_rotation = $Camera3D.global_rotation
+		$Camera3D.global_rotation.x = lerp_angle(actual_rotation.x, look_at_rotation.x, 0.1)
+		$Camera3D.global_rotation.y = lerp_angle(actual_rotation.y, look_at_rotation.y, 0.1)
+		$Camera3D.global_rotation.z = lerp_angle(actual_rotation.z, look_at_rotation.z, 0.1)
+		
+		$Camera3D.global_position = lerp($Camera3D.global_position, camera_target_pos, cameraLerpSpeed * delta * 10.0 if !Input.is_action_pressed("pan_camera") else 1.0)
+
 		
 	if $Camera3D.global_position.distance_to(global_position) < 0.5:
 		visible = false
 	else:
 		visible = true
 	
-	$Camera3D.global_position = lerp($Camera3D.global_position, camera_target_pos, cameraLerpSpeed * delta * 10.0 if !Input.is_action_pressed("pan_camera") else 1.0)
 
-	var actual_rotation = $Camera3D.global_rotation
-	$Camera3D.look_at(camera_target_look_pos)
-	var look_at_rotation = $Camera3D.global_rotation
-	$Camera3D.global_rotation.x = lerp_angle(actual_rotation.x, look_at_rotation.x, 0.1)
-	$Camera3D.global_rotation.y = lerp_angle(actual_rotation.y, look_at_rotation.y, 0.1)
-	$Camera3D.global_rotation.z = lerp_angle(actual_rotation.z, look_at_rotation.z, 0.1)
+
 
 	var collision = move_and_collide(velocity)
 	if collision:
