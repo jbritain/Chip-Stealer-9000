@@ -51,6 +51,8 @@ func _input(event):
 		
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and Input.is_action_pressed("pan_camera"):
 		mouse_position_since_clicked += event.relative / get_viewport().get_visible_rect().size
+		mouse_position_since_clicked.x = clamp(mouse_position_since_clicked.x, -PI, PI)
+		mouse_position_since_clicked.y = clamp(mouse_position_since_clicked.y, -PI * 0.48, PI * 0.48)
 		print(mouse_position_since_clicked)
 
 func _physics_process(delta: float) -> void:
@@ -75,15 +77,23 @@ func _physics_process(delta: float) -> void:
 	velocity = transform.basis.z * speed
 	move_and_collide(velocity)
 	
-	var camera_target_pos = global_position - global_transform.basis.z
+	var camera_target_pos = global_position - (global_basis.z if !Input.is_action_pressed("pan_camera") else Vector3.ZERO)
 	var camera_target_look_pos = global_position
 	
 	if Input.is_action_pressed("pan_camera"):
-		var rotated_dir = transform.basis.z.rotated(Vector3.LEFT, mouse_position_since_clicked.y * 2.0 * PI)
-		rotated_dir = rotated_dir.rotated(Vector3.UP, mouse_position_since_clicked.x * 2.0 * PI)
-		camera_target_look_pos = global_position + Vector3(0.0, 0.0, 100.0) * rotated_dir
+		var rotated_basis = global_transform.basis
+		rotated_basis = rotated_basis.rotated(Vector3(1, 0, 0), mouse_position_since_clicked.y)
+		rotated_basis = rotated_basis.rotated(Vector3(0, 1, 0), -mouse_position_since_clicked.x)
+		camera_target_look_pos = global_position + 100.0 * rotated_basis.z
+	else:
+		mouse_position_since_clicked = Vector2.ZERO
+		
+	if $Camera3D.global_position.distance_to(global_position) < 0.5:
+		visible = false
+	else:
+		visible = true
 	
-	$Camera3D.global_position = lerp($Camera3D.global_position, camera_target_pos, cameraLerpSpeed * delta * 10.0 if Input.is_action_pressed("pan_camera") else 1.0)
+	$Camera3D.global_position = lerp($Camera3D.global_position, camera_target_pos, cameraLerpSpeed * delta * 10.0 if !Input.is_action_pressed("pan_camera") else 1.0)
 
 	var actual_rotation = $Camera3D.global_rotation
 	$Camera3D.look_at(camera_target_look_pos)
