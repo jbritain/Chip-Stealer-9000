@@ -12,11 +12,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -70.3086, 0)
 [node name="ChipDeliveryPoint" parent="." instance=ExtResource("2_j3u86")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.40264, -33.8874, 39.8167)
 
-<<<<<<< Updated upstream
+
 [node name="ReflectionProbe" type="ReflectionProbe" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.34346, 17.3191, 167.491)
 size = Vector3(46.8584, 34.8778, 51.6573)
-=======
+
 [node name="JGRoss" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.0099, -32.499, 12.6238)
 
@@ -37,4 +37,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.8811, -28.4788, -116.513)
 
 [node name="TaylorCafe" parent="." instance=ExtResource("3_xtx6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 99.1231, -34.8554, 72.4935)
->>>>>>> Stashed changes
+
