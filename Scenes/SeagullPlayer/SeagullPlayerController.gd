@@ -2,14 +2,16 @@ extends CharacterBody3D
 
 @export var acceleration: float = 2 # how quickly the plane can change speed
 @export var throttleSpeed: float = 2 # how quickly the throttle can change
-@export var maxPitchSpeed: float = PI/2 # how quickly the plane can pitch, in radians per second
-@export var maxRollSpeed: float = PI
-@export var maxYawSpeed: float = PI/2
+@export var pitchSpeed: float = PI/2 # how quickly the plane can pitch, in radians per second
+@export var rollSpeed: float = PI
+@export var yawSpeed: float = PI/2
 @export var minSpeed: float = 0.1
 @export var maxSpeed: float = 0.1
-@export var mouseSensitivity: float = 100
 @export var respawn_position: Vector3 = Vector3(0, 102.173, 0) 
 @export var respawn_delay: float = 2.0 
+@export var cameraLerpSpeed: float = 5.0
+
+var mouse_position_since_clicked = Vector2.ZERO
 
 
 var targetSpeed: float = 0
@@ -19,15 +21,12 @@ var pitch: float = 0
 var roll: float = 0
 var yaw: float = 0
 
-var continuedMousePos = Vector2.ZERO # position of the mouse, not including the fact we reset it's position every frame 
-var lerpedMousePos = Vector2.ZERO # we lerp this towards the actual mouse position, then subtract the last lerped mouse pos to work out the change in position, which we use to determine the amount to pitch or roll by
-var lastLerpedMousePos = Vector2.ZERO
-var mouseMotion = Vector2.ZERO
 var throttle = 0
 
 var can_grab = false
 var grabbable_student : Node3D # who can we nick chips from?
 signal hit
+
 
 func _enter_tree():
 	set_multiplayer_authority(str(name).to_int())
@@ -49,64 +48,25 @@ func _input(event):
 		grabbable_student.get_chips_stolen()
 		
 		self.can_grab = false
-
-func getScreenSpaceMousePos():
-	var absPos = get_viewport().get_mouse_position()
-	var screenSize = Vector2(get_viewport().size.x, get_viewport().size.y)
-	
-	return absPos / screenSize
-
-#
-#func getMouseMotion():
-	## every frame we reset the position of the mouse to 0.5, 0.5, so the difference between this and the actual position is the motion of the mouse
-	#var mousePos = getScreenSpaceMousePos()
-	#continuedMousePos += mousePos - Vector2(0.5, 0.5) #Vector2(stepify(mousePos.x, 0.1), stepify(mousePos.y, 0.1)) - Vector2(0.5, 0.5)
-	#lastLerpedMousePos = lerpedMousePos
-	#lerpedMousePos = lerp(lastLerpedMousePos, continuedMousePos, 0.05)
-	#mouseMotion = lerpedMousePos - lastLerpedMousePos
-#
-##	print(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))
-##	print(get_viewport().get_mouse_position())
-##	print("---")
-#
-	#get_viewport().warp_mouse(Vector2(floor(get_viewport().size.x * 0.5), floor(get_viewport().size.y * 0.5)))#floor(get_viewport().size * 0.5))
+		
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and Input.is_action_pressed("pan_camera"):
+		mouse_position_since_clicked += event.relative / get_viewport().get_visible_rect().size
+		print(mouse_position_since_clicked)
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
+	
+	transform.basis = transform.basis.rotated(transform.basis.x, Input.get_axis("pitch_up", "pitch_down") * delta * pitchSpeed)
+
+
+	transform.basis.rotated(transform.basis.y, Input.get_axis("yaw_right", "yaw_left") * delta * yawSpeed)
+	transform.basis = transform.basis.rotated(transform.basis.z, Input.get_axis("roll_left", "roll_right") * delta * rollSpeed)
+
 	if Input.is_action_pressed("throttle_up") and throttle <= 1.0:
 		throttle += throttleSpeed * delta
 	elif Input.is_action_pressed("throttle_down") and throttle >= 0.0:
 		throttle -= throttleSpeed * delta
-	if Input.is_key_pressed(KEY_W):
-		pitch += 0.03 * delta
-	elif Input.is_key_pressed(KEY_S):
-		pitch -= 0.03 * delta
-	else:
-		pitch = 0
-	if Input.is_key_pressed(KEY_Q):
-		roll -= 0.03 * delta
-	elif Input.is_key_pressed(KEY_E):
-		roll += 0.03 * delta
-	else:
-		roll = 0
-	if Input.is_key_pressed(KEY_A):
-		yaw += 0.03 * delta
-	elif Input.is_key_pressed(KEY_D):
-		yaw -= 0.03 * delta
-	else:
-		yaw = 0
-
-	#getMouseMotion()
-
-	#pitch = mouseMotion.y * delta * maxPitchSpeed * mouseSensitivity
 		
-	#roll = lerp(roll, Input.get_axis("roll_left", "roll_right") * delta * maxRollSpeed, 0.1)
-	#roll = mouseMotion.x * delta * maxRollSpeed * mouseSensitivity
-
-	transform.basis = transform.basis.rotated(transform.basis.x.normalized(), pitch)
-	transform.basis = transform.basis.rotated(transform.basis.y.normalized(), yaw)
-	transform.basis = transform.basis.rotated(transform.basis.z.normalized(), roll)
-
 	throttle = clampf(throttle, 0.0, 1.0)
 
 	targetSpeed = (throttle * (maxSpeed - minSpeed)) + minSpeed
@@ -115,6 +75,23 @@ func _physics_process(delta: float) -> void:
 	velocity = transform.basis.z * speed
 	move_and_collide(velocity)
 	
+	var camera_target_pos = global_position - global_transform.basis.z
+	var camera_target_look_pos = global_position
+	
+	if Input.is_action_pressed("pan_camera"):
+		var rotated_dir = transform.basis.z.rotated(Vector3.LEFT, mouse_position_since_clicked.y * 2.0 * PI)
+		rotated_dir = rotated_dir.rotated(Vector3.UP, mouse_position_since_clicked.x * 2.0 * PI)
+		camera_target_look_pos = global_position + Vector3(0.0, 0.0, 100.0) * rotated_dir
+	
+	$Camera3D.global_position = lerp($Camera3D.global_position, camera_target_pos, cameraLerpSpeed * delta * 10.0 if Input.is_action_pressed("pan_camera") else 1.0)
+
+	var actual_rotation = $Camera3D.global_rotation
+	$Camera3D.look_at(camera_target_look_pos)
+	var look_at_rotation = $Camera3D.global_rotation
+	$Camera3D.global_rotation.x = lerp_angle(actual_rotation.x, look_at_rotation.x, 0.1)
+	$Camera3D.global_rotation.y = lerp_angle(actual_rotation.y, look_at_rotation.y, 0.1)
+	$Camera3D.global_rotation.z = lerp_angle(actual_rotation.z, look_at_rotation.z, 0.1)
+
 	var collision = move_and_collide(velocity)
 	if collision:
 		die()
