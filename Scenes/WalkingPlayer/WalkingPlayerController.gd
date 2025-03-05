@@ -44,7 +44,7 @@ func _input(event):
 		
 	if event.is_action_pressed("shoot") and shot_cooldown == 0.0:
 		shot_cooldown = 0.5
-		$gunAnimator.play("Shoot")
+		$GunAnimator.play("Shoot")
 		var collider = $Camera3D/RayCast3D.get_collider()
 		# boil
 		if collider:
