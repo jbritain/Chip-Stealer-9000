@@ -5,11 +5,12 @@ extends CharacterBody3D
 @export var pitchSpeed: float = PI/2 # how quickly the plane can pitch, in radians per second
 @export var rollSpeed: float = PI
 @export var yawSpeed: float = PI/2
-@export var minSpeed: float = 0.1
+@export var minSpeed: float = 0.0
 @export var maxSpeed: float = 0.1
 @export var respawn_position: Vector3 = Vector3(0, 102.173, 0) 
-@export var respawn_delay: float = 2.0 
-@export var cameraLerpSpeed: float = 5.0
+@export var respawn_delay: float = 10.0 
+@export var cameraLerpSpeed: float = 10.0
+@export var stunned = false
 
 var mouse_position_since_clicked = Vector2.ZERO
 
@@ -58,11 +59,11 @@ func _input(event):
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
 	
-	transform.basis = transform.basis.rotated(transform.basis.x, Input.get_axis("pitch_up", "pitch_down") * delta * pitchSpeed)
+	transform.basis = transform.basis.rotated(transform.basis.x.normalized(), Input.get_axis("pitch_up", "pitch_down") * delta * pitchSpeed)
 
 
-	transform.basis.rotated(transform.basis.y, Input.get_axis("yaw_right", "yaw_left") * delta * yawSpeed)
-	transform.basis = transform.basis.rotated(transform.basis.z, Input.get_axis("roll_left", "roll_right") * delta * rollSpeed)
+	transform.basis.rotated(transform.basis.y.normalized(), Input.get_axis("yaw_right", "yaw_left") * delta * yawSpeed)
+	transform.basis = transform.basis.rotated(transform.basis.z.normalized(), Input.get_axis("roll_left", "roll_right") * delta * rollSpeed)
 
 	if Input.is_action_pressed("throttle_up") and throttle <= 1.0:
 		throttle += throttleSpeed * delta
@@ -74,7 +75,13 @@ func _physics_process(delta: float) -> void:
 	targetSpeed = (throttle * (maxSpeed - minSpeed)) + minSpeed
 	speed = lerp(speed, targetSpeed, acceleration * delta)
 
-	velocity = transform.basis.z * speed
+	if !stunned:
+		velocity = transform.basis.z * speed
+	else:
+		if is_on_floor():
+			velocity.y = max(velocity.y, 0.0) # reset gravity if on ground
+		
+		velocity.y -= 0.2 * delta # gravity
 	move_and_collide(velocity)
 	
 	var camera_target_pos = global_position - (global_basis.z if !Input.is_action_pressed("pan_camera") else Vector3.ZERO)
@@ -95,7 +102,7 @@ func _physics_process(delta: float) -> void:
 		$Camera3D.global_rotation.y = lerp_angle(actual_rotation.y, look_at_rotation.y, 0.1)
 		$Camera3D.global_rotation.z = lerp_angle(actual_rotation.z, look_at_rotation.z, 0.1)
 		
-		$Camera3D.global_position = lerp($Camera3D.global_position, camera_target_pos, cameraLerpSpeed * delta * 10.0 if !Input.is_action_pressed("pan_camera") else 1.0)
+		$Camera3D.global_position = lerp($Camera3D.global_position, camera_target_pos, cameraLerpSpeed * delta)
 
 		
 	if $Camera3D.global_position.distance_to(global_position) < 0.5:
@@ -108,19 +115,26 @@ func _physics_process(delta: float) -> void:
 
 	var collision = move_and_collide(velocity)
 	if collision:
-		die()
+		get_stunned()
 
-func die():
-	hit.emit()
+
+	
+@rpc("any_peer", "reliable", "call_local")
+func get_stunned():
+	if stunned:
+		return
+	
+	if !is_multiplayer_authority():
+		rpc_id(int(name), "get_stunned")
+		return
+	print("I got stunned")
+	stunned = true
 	
 	await get_tree().create_timer(respawn_delay).timeout
-
-	respawn()
 	
-func respawn():
-	await get_tree().create_timer(1).timeout
-	position = respawn_position
-	# get_tree().reload_current_scene()
+	print("I got up")
+	stunned = false
+	global_position.y += 100.0
 
 #func _on_mob_detector_body_entered(body: Node3D) -> void:
 	#if body != self:

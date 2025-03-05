@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhxc0xq4xdjs7"]
+[gd_scene load_steps=3 format=3 uid="uid://bhxc0xq4xdjs7"]
 
 [ext_resource type="Script" uid="uid://cojbotj0v7b6h" path="res://Scenes/GameHud/GameHud.gd" id="1_t61rx"]
+[ext_resource type="Texture2D" uid="uid://biawu1g1eu0lk" path="res://Scenes/GameHud/crosshair.png" id="2_j1i8v"]
 
 [node name="GameHud" type="CanvasLayer"]
 script = ExtResource("1_t61rx")
@@ -14,3 +15,15 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="PanelContainer/HBoxContainer"]
 layout_mode = 2
+
+[node name="Crosshair" type="TextureRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_j1i8v")

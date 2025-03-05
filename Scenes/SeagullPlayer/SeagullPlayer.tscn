@@ -57,7 +57,8 @@ properties/1/replication_mode = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_7frmi"]
 size = Vector3(0.3, 0.2, 1)
 
-[node name="SeagullPlayer" type="CharacterBody3D"]
+[node name="SeagullPlayer" type="CharacterBody3D" groups=["seagull_colliders"]]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 script = ExtResource("1_gsq1o")
 
 [node name="Flying gull Texture 2" type="MeshInstance3D" parent="."]
@@ -65,7 +66,7 @@ transform = Transform3D(-2.18557e-10, -0.005, 2.18557e-10, 0, -2.18557e-10, -0.0
 mesh = SubResource("ArrayMesh_cxo51")
 skeleton = NodePath("")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["seagull_colliders"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00134277, 0.0155182, -0.0228663)
 shape = SubResource("BoxShape3D_1gcep")
 

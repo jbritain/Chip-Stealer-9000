@@ -12,7 +12,11 @@ func _ready():
 	add_child(killfeed_container)
 	killfeed_container.position.y += 80
 	
-	
+func _process(delta):
+	if !GlobalHandler.is_seagull || Input.is_action_pressed("pan_camera"):
+		visible = true
+	else:
+		visible = false
 	
 	
 func update_score_display(student_score, seagull_score):

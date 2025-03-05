@@ -6,6 +6,8 @@ const SPEED = 20.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.05
 
+var shot_cooldown = 0.0
+
 @export var has_chips = false:
 	set(value):
 		if has_chips != value:
@@ -39,9 +41,21 @@ func _input(event):
 
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
+		
+	if event.is_action_pressed("shoot") and shot_cooldown == 0.0:
+		shot_cooldown = 0.5
+		$gunAnimator.play("Shoot")
+		var collider = $Camera3D/RayCast3D.get_collider()
+		# boil
+		if collider:
+			if collider.is_in_group("seagull_colliders"):
+				collider.get_stunned()
+			
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
+	
+	shot_cooldown = max(0.0, shot_cooldown - delta)
 	
 	# Add the gravity.
 	if not is_on_floor():
