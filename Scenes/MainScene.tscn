@@ -33,3 +33,7 @@ autoplay = true
 
 [node name="MinimapSubViewport" type="SubViewport" parent="."]
 size = Vector2i(200, 200)
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="GameTimer" to="UI/GameLobby" method="_on_game_timer_timeout"]

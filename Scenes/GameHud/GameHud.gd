@@ -17,8 +17,6 @@ func _ready():
 	killfeed_container.position.y += 80
 	mission_container.position.y += 40
 	
-	
-func _process(delta):
 	if !GlobalHandler.is_seagull || Input.is_action_pressed("pan_camera"):
 		$Crosshair.visible = true
 	else:

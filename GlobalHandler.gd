@@ -7,16 +7,30 @@ const GameHud = preload("res://Scenes/GameHud/GameHud.tscn")
 const ChipDeliveryPoint = preload("res://Scenes/Checkpoints/ChipDeliveryPoint.tscn")
 const PlayerName = preload("res://Scenes/GameLobby/playerName.tscn")
 
+@onready var game_timer = get_tree().get_root().get_node("MainScene/GameTimer")
+
 var is_seagull = false
 var enet_peer = ENetMultiplayerPeer.new()
 var student_score = 0
 var seagull_score = 0
+
+var game_started = false
+var game_ended = false
 
 var player_chips = {}
 
 var username = ""
 
 var chip_delivery_point
+
+func _process(delta):
+	rpc("client_update_timer", game_timer.time_left)
+
+@rpc("any_peer", "unreliable", "call_local")
+func client_update_timer(time):
+	var hud = get_tree().get_root().get_node_or_null("GameHud/Timer")
+	if hud:
+		hud.text = str(round(time))
 
 func _input(event):
 	if event.is_action_pressed("quit"):
@@ -26,8 +40,33 @@ func update_player_chip_status(player_id, has_chips_value):
 	if multiplayer.is_server():
 		player_chips[player_id] = has_chips_value
 		
-func start_game():
+func server_end_game():
+	rpc("client_end_game")
+	
+@rpc("any_peer", "reliable", "call_local")
+func client_end_game():
+	var hud = get_tree().get_root().get_node_or_null("GameHud")
+	hud.hide()
+	get_tree().get_root().get_node("MainScene/UI/GameLobby").show()
+	
+	var win_indicator = get_tree().get_root().get_node("MainScene/UI/GameLobby/Label")
+	
+	if seagull_score == student_score:
+		win_indicator.text = "Draw!"
+	elif seagull_score > student_score:
+		win_indicator.text = "Seagulls win!"
+	else:
+		win_indicator.text = "Students win!"
+		
+	
+	game_ended = true
+		
+func start_game():	
 	if multiplayer.is_server():
+		if !game_started:
+			game_started = true
+			game_timer.start(500)
+		
 		print("Starting new game round...")
 		server_start_round()
 	else:
@@ -131,8 +170,7 @@ func server_chips_stolen(peer_id):
 			break
 			
 	if no_chips_left:
-		print("Starting new round...")
-		server_start_round()
+		server_end_round(true)
 		
 @rpc("any_peer", "reliable")
 func server_chips_delivered():
@@ -160,8 +198,27 @@ func server_chips_delivered():
 			
 	if no_chips_left:
 		print("Starting new round...")
-		server_start_round()
+		server_end_round(false)
 	
+	
+@rpc("reliable", "any_peer", "call_local")
+func server_end_round(seagulls_win):
+	if not multiplayer.is_server():
+		return
+		
+	rpc("client_end_round", seagulls_win)
+	
+	await get_tree().create_timer(5).timeout
+	
+	server_start_round()
+	
+@rpc("reliable", "any_peer", "call_local")
+func client_end_round(seagulls_win):
+	for i in 5:
+		get_tree().root.get_node("GameHud/StunnedText").visible = true
+		get_tree().root.get_node("GameHud/StunnedText").text = "%s win! Next round starts in %s seconds." % ["Seagulls" if seagulls_win else "Students", str(5 - i)]
+		await get_tree().create_timer(1).timeout
+	get_tree().root.get_node("GameHud/StunnedText").visible = false
 
 @rpc("reliable", "any_peer")
 func server_start_round():
@@ -170,8 +227,6 @@ func server_start_round():
 	
 	# give all walking players chips
 	rpc("client_get_chips")
-	
-	rpc("client_start_round")
 	
 	# put a chip delivery point at a random cafe
 	var student_spawn_points = get_tree().get_nodes_in_group("student_spawn_points")

@@ -26,6 +26,7 @@ var username: String = ""
 			has_chips = value
 			
 func _enter_tree():
+	stuck = false
 	set_multiplayer_authority(str(name).to_int())
 
 func _ready():
@@ -79,6 +80,9 @@ func _input(event):
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
 	
+	if GlobalHandler.game_ended:
+		$CanvasLayer.hide()
+	
 	shot_cooldown = max(0.0, shot_cooldown - delta)
 	
 	# Add the gravity.
@@ -99,8 +103,7 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 		
 	if stuck:
-		velocity.x = 0.0
-		velocity.z = 0.0
+		velocity = Vector3(0.0, 0.0, 0.0)
 
 	move_and_slide()
 	minimap_camera.global_transform.origin = global_transform.origin + Vector3(0, 100, 0)
@@ -131,7 +134,9 @@ func get_stuck():
 		if stuck: return
 		print("stuck!")
 		stuck = true
-		await get_tree().create_timer(10).timeout
+		get_tree().root.get_node("GameHud/StuckText").visible = true
+		await get_tree().create_timer(5).timeout
+		get_tree().root.get_node("GameHud/StuckText").visible = false
 		stuck = false
 
 #
