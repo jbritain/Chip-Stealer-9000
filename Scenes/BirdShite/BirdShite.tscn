@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://cs0cfhdcnycel"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4k6ax"]
+metallic_specular = 1.0
+roughness = 0.05
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_q25hk"]
+material = SubResource("StandardMaterial3D_4k6ax")
+radius = 0.2
+height = 0.4
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4k6ax"]
+size = Vector2(0.4, 0.4)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4k6ax"]
+properties/0/path = NodePath("MeshInstance3D:visible")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("MeshInstance3D2:visible")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="BirdShite" type="Node3D"]
+
+[node name="blob" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_q25hk")
+
+[node name="splatter" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_4k6ax")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_4k6ax")

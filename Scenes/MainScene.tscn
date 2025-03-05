@@ -19,7 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("uid://clgerp1c63v3", "uid://cgxj63ipftcet", "uid://v6i61qm0fkam")
+_spawnable_scenes = PackedStringArray("uid://clgerp1c63v3", "uid://cgxj63ipftcet", "uid://v6i61qm0fkam", "uid://cs0cfhdcnycel")
 spawn_path = NodePath("..")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
