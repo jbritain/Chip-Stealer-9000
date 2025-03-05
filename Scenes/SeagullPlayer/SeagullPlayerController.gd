@@ -14,7 +14,6 @@ extends CharacterBody3D
 
 var mouse_position_since_clicked = Vector2.ZERO
 
-
 var targetSpeed: float = 0
 var speed: float = 0
 

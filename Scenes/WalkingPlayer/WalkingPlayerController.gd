@@ -77,8 +77,11 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 func deliver_chips():
-	if not is_multiplayer_authority(): return
+	if not is_multiplayer_authority(): 
+		print(" i am not the uathority")
+		return
 	has_chips = false
+	print("i just set chips to false and announced chips delivered. i am : %s" % [String(name)])
 	GlobalHandler.announce_chips_delivered()
 	
 @rpc("any_peer","reliable")

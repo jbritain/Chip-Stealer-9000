@@ -11,17 +11,18 @@ var enet_peer = ENetMultiplayerPeer.new()
 var student_score = 0
 var seagull_score = 0
 
+var player_chips = {}
+
 var chip_delivery_point
 
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_U:
 		start_game()
-	if event is InputEventKey and event.pressed and event.keycode == KEY_Y:
-		print("key y pressed")
-		var players = get_tree().get_nodes_in_group("student")
-		for each in players:
-			print(each.has_chips)
 
+func update_player_chip_status(player_id, has_chips_value):
+	if multiplayer.is_server():
+		player_chips[player_id] = has_chips_value
+		
 func start_game():
 	if multiplayer.is_server():
 		print("Starting new game round...")
@@ -93,19 +94,24 @@ func announce_chips_delivered():
 @rpc("any_peer", "reliable")		
 func server_chips_stolen():
 	if not multiplayer.is_server():
+		print("server chips stolen but not authority")
 		return
+		
+	var peer_id = multiplayer.get_remote_sender_id()
+	player_chips[peer_id] = false
+	
 	print("chips stolen function")
 	seagull_score += 1
 	print("seagull score increase to",seagull_score)
 	rpc("client_update_score", student_score, seagull_score)
 	client_update_score(student_score,seagull_score)
-	
+
 	var no_chips_left = true
-	var students = get_tree().get_nodes_in_group("student")
-	for student in students:
-		if student.has_chips:
+	for player_id in player_chips.keys():
+		if player_chips[player_id]:
+			print("player: %s" % [player_id])
 			no_chips_left = false
-			return
+			break
 			
 	if no_chips_left:
 		print("Starting new round...")
@@ -113,24 +119,31 @@ func server_chips_stolen():
 		
 @rpc("any_peer", "reliable")
 func server_chips_delivered():
+	print(" i have received the chips delivered")
 	if not multiplayer.is_server():
+		print("i am not the server")
 		return
-	print("chips delivered function")
-	student_score += 1
-	print("student score increase to ", student_score)
+	
 	
 	var peer_id = multiplayer.get_remote_sender_id()
 	if peer_id == 0:
 		peer_id = 1
+	player_chips[peer_id] = false
+	
+	print("chips delivered function")
+	student_score += 1
+	print("student score increase to ", student_score)
+
+	
 	var delivery_string = "%s delivered chips!" % [peer_id]
 	rpc("client_update_score", student_score, seagull_score,delivery_string)
 	
 	var no_chips_left = true
-	var students = get_tree().get_nodes_in_group("student")
-	for student in students:
-		if student.has_chips:
+	for player_id in player_chips.keys():
+		if player_chips[player_id]:
+			print("player: %s" % [player_id])
 			no_chips_left = false
-			return
+			break
 			
 	if no_chips_left:
 		print("Starting new round...")
@@ -148,7 +161,7 @@ func server_start_round():
 	# Set scores back to 0
 	student_score = 0
 	seagull_score = 0
-	rpc("client_update_score", student_score, seagull_score)
+	
 	rpc("client_start_round")
 	
 	# put a chip delivery point at a random cafe
@@ -159,10 +172,15 @@ func server_start_round():
 	var student_delivery_points = get_tree().get_nodes_in_group("student_delivery_points")
 	var random_delivery_point = student_delivery_points.pick_random()
 	print("placing chip delivery point at " + random_delivery_point.name)
+	var mission_string = "Get your food from %s to %s... hurry before the seagulls nick it!" % [random_spawn_point.name,random_delivery_point.name]
+	
 	chip_delivery_point.position = random_delivery_point.position
-	
+	var students = get_tree().get_nodes_in_group("student")
+	for student in students:
+		var player_id = int(student.name)
+		player_chips[player_id] = true
 	rpc("client_start_round", random_spawn_point.position, chip_delivery_point.position)
-	
+	rpc("client_update_score", student_score, seagull_score,null,mission_string)
 	# TODO: Start a timer for X minutes before round ends
 
 @rpc("any_peer","reliable","call_local")
@@ -170,6 +188,7 @@ func client_start_round(spawn_pos, delivery_pos):
 	var player = get_current_player()
 	var hud = get_tree().get_root().find_child("GameHud",true,false)
 	hud.reset_killfeed()
+	hud.reset_mission()
 	pass
 	if is_seagull:
 		player.position = delivery_pos
@@ -179,12 +198,15 @@ func client_start_round(spawn_pos, delivery_pos):
 
 		
 @rpc("authority","reliable", "call_local")
-func client_update_score(w,s,killfeed=null):
+func client_update_score(w,s,killfeed=null,mission=null):
 	print("received new score from server")
 	var hud = get_tree().get_root().find_child("GameHud",true,false)
 	hud.update_score_display(w, s)
+	print("%s and %s" % [killfeed,mission])
 	if killfeed:
 		hud.add_kill(killfeed)
+	if mission:
+		hud.add_mission(mission)
 	
 @rpc("any_peer", "reliable", "call_local")
 func client_get_chips():
