@@ -1,0 +1,11 @@
+Model Information:
+* title:	Skinny Male
+* source:	https://sketchfab.com/3d-models/skinny-male-5ecb878ed6f04496a3a4f157bb7a1ad9
+* author:	Teo (https://sketchfab.com/szilla.mini)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Skinny Male" (https://sketchfab.com/3d-models/skinny-male-5ecb878ed6f04496a3a4f157bb7a1ad9) by Teo (https://sketchfab.com/szilla.mini) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

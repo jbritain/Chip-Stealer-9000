@@ -6,6 +6,7 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_boxto"]
 radius = 0.3
 height = 1.5
+[ext_resource type="PackedScene" uid="uid://bt5jqlfhrxt3e" path="res://Scenes/WalkingPlayer/skinny_male/scene.gltf" id="2_w0bm7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wysuy"]
 radius = 0.3
@@ -134,9 +135,6 @@ _data = {
 [node name="WalkingPlayer" type="CharacterBody3D"]
 script = ExtResource("1_83ikd")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_boxto")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_wysuy")
 
@@ -158,3 +156,5 @@ replication_config = SubResource("SceneReplicationConfig_mkxse")
 libraries = {
 &"": SubResource("AnimationLibrary_y1bt5")
 }
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("2_w0bm7")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
