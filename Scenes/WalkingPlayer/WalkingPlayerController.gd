@@ -11,6 +11,8 @@ const MOUSE_SENSITIVITY = 0.05
 var shot_cooldown = 0.0
 var stuck = false
 
+var game_started = false
+
 var username: String = ""
 
 @export var has_chips = false:
@@ -34,21 +36,24 @@ func _ready():
 		return
 		
 	$Camera3D.current = true
-	setup_minimap()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func setup_minimap():
-	minimap_subviewport.world_3d = get_world_3d()
-	minimap_camera.current = true
-	minimap_camera.rotate(Vector3(1,0,0),deg_to_rad(-90))
-	minimap_subviewport.size = Vector2(500, 500)
-	minimap_rect.texture = minimap_subviewport.get_texture()
-	
-	var player_dot = ColorRect.new()
-	player_dot.color = Color(1,0,0)
-	player_dot.size = Vector2(10,10)
-	minimap_rect.add_child(player_dot)
-	player_dot.position = Vector2(250,250)
+	if not is_multiplayer_authority():
+		return
+	if game_started == false:
+		game_started = true
+		minimap_subviewport.world_3d = get_world_3d()
+		minimap_camera.current = true
+		minimap_camera.rotate(Vector3(1,0,0),deg_to_rad(-90))
+		minimap_subviewport.size = Vector2(500, 500)
+		minimap_rect.texture = minimap_subviewport.get_texture()
+		
+		var player_dot = ColorRect.new()
+		player_dot.color = Color(1,0,0)
+		player_dot.size = Vector2(10,10)
+		minimap_rect.add_child(player_dot)
+		player_dot.position = Vector2(250,250)
 	
 
 	
