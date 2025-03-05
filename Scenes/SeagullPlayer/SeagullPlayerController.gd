@@ -19,6 +19,8 @@ var mouse_position_since_clicked = Vector2.ZERO
 var targetSpeed: float = 0
 var speed: float = 0
 
+var username: String = ""
+
 var pitch: float = 0
 var roll: float = 0
 var yaw: float = 0
@@ -36,14 +38,10 @@ func _enter_tree():
 func _ready():
 	if not is_multiplayer_authority(): return
 	$Camera3D.current = true
-	
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	self.add_to_group("seagull")
 
 func _input(event):
 	if not is_multiplayer_authority(): return
-	if event.is_action_pressed("quit"):
-		get_tree().quit()
 	if event.is_action_pressed("jump") and can_grab:
 		print("gotcha")
 		# in this case we decide if we have the authority to steal the chips, but the student makes the call since it's their value being modified

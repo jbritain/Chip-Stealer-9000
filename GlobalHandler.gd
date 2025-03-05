@@ -5,6 +5,7 @@ const WalkingPlayer = preload("res://Scenes/WalkingPlayer/WalkingPlayer.tscn")
 const SeagullPlayer = preload("res://Scenes/SeagullPlayer/SeagullPlayer.tscn")
 const GameHud = preload("res://Scenes/GameHud/GameHud.tscn")
 const ChipDeliveryPoint = preload("res://Scenes/Checkpoints/ChipDeliveryPoint.tscn")
+const PlayerName = preload("res://Scenes/GameLobby/playerName.tscn")
 
 var is_seagull = false
 var enet_peer = ENetMultiplayerPeer.new()
@@ -13,11 +14,13 @@ var seagull_score = 0
 
 var player_chips = {}
 
+var username = ""
+
 var chip_delivery_point
 
 func _input(event):
-	if event is InputEventKey and event.pressed and event.keycode == KEY_U:
-		start_game()
+	if event.is_action_pressed("quit"):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func update_player_chip_status(player_id, has_chips_value):
 	if multiplayer.is_server():
@@ -32,39 +35,55 @@ func start_game():
 		rpc_id(1, "server_start_round") # Request the server to start the round
 
 @rpc("any_peer", "reliable")
-func handle_connection_info(peer_is_seagull):
+func handle_connection_info(peer_is_seagull, peer_username):
 	var peer_id = multiplayer.get_remote_sender_id()
 	if peer_is_seagull:
-		add_seagull_player(peer_id)
+		add_seagull_player(peer_id, peer_username)
 	else:
-		add_walking_player(peer_id)
+		add_walking_player(peer_id, peer_username)
 
 @rpc("any_peer", "reliable")
 func request_connection_info():
-	rpc_id(multiplayer.get_remote_sender_id(), "handle_connection_info", is_seagull)
+	rpc_id(multiplayer.get_remote_sender_id(), "handle_connection_info", is_seagull, username)
 
 func init_game_world():
 	get_tree().get_root().add_child(Map.instantiate())
-	get_tree().get_root().add_child(GameHud.instantiate())
+	var hud = GameHud.instantiate()
+	get_tree().get_root().add_child(hud)
+	hud.hide()
 	chip_delivery_point = ChipDeliveryPoint.instantiate()
 	get_tree().get_root().add_child(chip_delivery_point)
 	
-func add_walking_player(peer_id):
+func add_walking_player(peer_id, peer_username):
 	if multiplayer.is_server():
 		print("server: add walking player")
 	else:
 		print("client: add walking player")
 	var player = WalkingPlayer.instantiate()
 	player.name = str(peer_id)
+	player.username = peer_username
+	
+	var player_name = PlayerName.instantiate()
+	player_name.name = str(peer_id)
+	player_name.text = peer_username
+	get_tree().get_root().get_node("MainScene/UI/GameLobby/MarginContainer/HBoxContainer/StudentList").add_child(player_name)
+	
+	
 	$/root/MainScene.add_child(player)
 	
-func add_seagull_player(peer_id):
+func add_seagull_player(peer_id, peer_username):
 	if multiplayer.is_server():
 		print("server: add seagull player")
 	else:
 		print("client: add seagull player")
 	var player = SeagullPlayer.instantiate()
 	player.name = str(peer_id)
+	player.username = peer_username
+	var player_name = PlayerName.instantiate()
+	player_name.name = str(peer_id)
+	player_name.text = peer_username
+	get_tree().get_root().get_node("MainScene/UI/GameLobby/MarginContainer/HBoxContainer/SeagullList").add_child(player_name)
+	
 	$/root/MainScene.add_child(player)
 
 func handle_connected_peer(peer_id):
@@ -172,7 +191,11 @@ func server_start_round():
 	var student_delivery_points = get_tree().get_nodes_in_group("student_delivery_points")
 	var random_delivery_point = student_delivery_points.pick_random()
 	print("placing chip delivery point at " + random_delivery_point.name)
-	var mission_string = "Get your food from %s to %s... hurry before the seagulls nick it!" % [random_spawn_point.name,random_delivery_point.name]
+	var mission_string
+	if is_seagull:
+		mission_string = "Steal the students' chips  before they deliver them from %s to %s!" % [random_spawn_point.name,random_delivery_point.name]
+	else:
+		mission_string = "Get your food from %s to %s... hurry before the seagulls nick it!" % [random_spawn_point.name,random_delivery_point.name]
 	
 	chip_delivery_point.position = random_delivery_point.position
 	var students = get_tree().get_nodes_in_group("student")
@@ -185,8 +208,11 @@ func server_start_round():
 
 @rpc("any_peer","reliable","call_local")
 func client_start_round(spawn_pos, delivery_pos):
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	var player = get_current_player()
 	var hud = get_tree().get_root().find_child("GameHud",true,false)
+	get_tree().get_root().get_node("MainScene/UI/GameLobby").hide()
+	hud.show()
 	hud.reset_killfeed()
 	hud.reset_mission()
 	if is_seagull:

@@ -1,0 +1,57 @@
+[gd_scene load_steps=3 format=3 uid="uid://jlung1iw1r25"]
+
+[ext_resource type="Script" uid="uid://diyibfqhj2e14" path="res://Scenes/GameLobby/GameLobby.gd" id="1_7dovm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qoy8j"]
+bg_color = Color(0.314316, 0.314316, 0.314316, 1)
+
+[node name="GameLobby" type="PanelContainer"]
+z_index = 100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoy8j")
+script = ExtResource("1_7dovm")
+
+[node name="StartGameButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Start Game"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_top = 32
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 15
+
+[node name="StudentList" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="MarginContainer/HBoxContainer/StudentList"]
+_spawnable_scenes = PackedStringArray("uid://d0pa41l8vgf2b")
+spawn_path = NodePath("..")
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/StudentList"]
+layout_mode = 2
+text = "STUDENTS"
+
+[node name="SeagullList" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="MarginContainer/HBoxContainer/SeagullList"]
+_spawnable_scenes = PackedStringArray("uid://d0pa41l8vgf2b")
+spawn_path = NodePath("..")
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/SeagullList"]
+layout_mode = 2
+text = "SEAGULLS"
+
+[connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]

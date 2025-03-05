@@ -9,6 +9,8 @@ const MOUSE_SENSITIVITY = 0.05
 var shot_cooldown = 0.0
 var stuck = false
 
+var username: String = ""
+
 @export var has_chips = false:
 	set(value):
 		if has_chips != value:
@@ -28,8 +30,6 @@ func _ready():
 	if not is_multiplayer_authority(): return
 	
 	$Camera3D.current = true
-	
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _input(event):
 	if not is_multiplayer_authority(): return
@@ -39,9 +39,6 @@ func _input(event):
 		self.rotate_y(deg_to_rad(event.relative.x * MOUSE_SENSITIVITY * -1))
 		
 		$Camera3D.rotate_x(deg_to_rad(event.relative.y * MOUSE_SENSITIVITY * -1))
-
-	if event.is_action_pressed("quit"):
-		get_tree().quit()
 		
 	if event.is_action_pressed("shoot") and shot_cooldown == 0.0:
 		shot_cooldown = 0.5
