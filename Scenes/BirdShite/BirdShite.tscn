@@ -1,4 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cs0cfhdcnycel"]
+[gd_scene load_steps=10 format=3 uid="uid://cs0cfhdcnycel"]
+
+[ext_resource type="Texture2D" uid="uid://dv2o0fduqyx71" path="res://Scenes/BirdShite/splatter.png" id="1_mvpxo"]
+[ext_resource type="Script" uid="uid://bm8x07vj2dwfx" path="res://Scenes/BirdShite/BirdShite.gd" id="1_vqs6u"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4k6ax"]
 metallic_specular = 1.0
@@ -9,24 +12,57 @@ material = SubResource("StandardMaterial3D_4k6ax")
 radius = 0.2
 height = 0.4
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vqs6u"]
+transparency = 1
+albedo_texture = ExtResource("1_mvpxo")
+metallic_specular = 1.0
+roughness = 0.2
+
 [sub_resource type="PlaneMesh" id="PlaneMesh_4k6ax"]
-size = Vector2(0.4, 0.4)
+material = SubResource("StandardMaterial3D_vqs6u")
+size = Vector2(1, 1)
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4k6ax"]
-properties/0/path = NodePath("MeshInstance3D:visible")
+properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
-properties/1/path = NodePath("MeshInstance3D2:visible")
+properties/1/path = NodePath("blob:visible")
 properties/1/spawn = true
 properties/1/replication_mode = 1
+properties/2/path = NodePath("splatter:visible")
+properties/2/spawn = true
+properties/2/replication_mode = 1
 
-[node name="BirdShite" type="Node3D"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_vqs6u"]
+radius = 0.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vqs6u"]
+size = Vector3(1, 0.109619, 1)
+
+[node name="BirdShite" type="CharacterBody3D" groups=["slows_player"]]
+collision_layer = 32768
+script = ExtResource("1_vqs6u")
 
 [node name="blob" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 mesh = SubResource("CapsuleMesh_q25hk")
 
 [node name="splatter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0280414, 0)
+visible = false
 mesh = SubResource("PlaneMesh_4k6ax")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_4k6ax")
+
+[node name="BlobCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("SphereShape3D_vqs6u")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0494385, 0)
+shape = SubResource("BoxShape3D_vqs6u")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

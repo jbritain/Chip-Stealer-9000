@@ -7,6 +7,7 @@ const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY = 0.05
 
 var shot_cooldown = 0.0
+var stuck = false
 
 @export var has_chips = false:
 	set(value):
@@ -73,6 +74,10 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
+		
+	if stuck:
+		velocity.x = 0.0
+		velocity.z = 0.0
 
 	move_and_slide()
 	
@@ -93,7 +98,16 @@ func get_chips_stolen():
 		var client_id = int(String(name))
 		rpc_id(client_id,"get_chips_stolen")
 	
-	
+@rpc("any_peer", "reliable")
+func get_stuck():
+	if !is_multiplayer_authority():
+		rpc_id(int(name), "get_stuck")
+	else:
+		if stuck: return
+		print("stuck!")
+		stuck = true
+		await get_tree().create_timer(10).timeout
+		stuck = false
 
 #
 #func _input(event):

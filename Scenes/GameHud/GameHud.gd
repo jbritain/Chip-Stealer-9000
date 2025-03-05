@@ -20,9 +20,9 @@ func _ready():
 	
 func _process(delta):
 	if !GlobalHandler.is_seagull || Input.is_action_pressed("pan_camera"):
-		visible = true
+		$Crosshair.visible = true
 	else:
-		visible = false
+		$Crosshair.visible = false
 	
 	
 func update_score_display(student_score, seagull_score):

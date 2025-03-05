@@ -12,6 +12,8 @@ extends CharacterBody3D
 @export var cameraLerpSpeed: float = 10.0
 @export var stunned = false
 
+var BirdShite = preload("res://Scenes/BirdShite/BirdShite.tscn")
+
 var mouse_position_since_clicked = Vector2.ZERO
 
 var targetSpeed: float = 0
@@ -54,6 +56,17 @@ func _input(event):
 		mouse_position_since_clicked.x = clamp(mouse_position_since_clicked.x, -PI, PI)
 		mouse_position_since_clicked.y = clamp(mouse_position_since_clicked.y, -PI * 0.48, PI * 0.48)
 		print(mouse_position_since_clicked)
+		
+	if event.is_action_pressed("bring_forth_jobby"):
+		rpc_id(1, "server_bring_forth_jobby")
+
+
+@rpc("any_peer", "reliable", "call_local")
+func server_bring_forth_jobby():
+	var shite = BirdShite.instantiate()
+	get_node("/root/MainScene").add_child(shite)
+	shite.global_position = position
+	shite.global_position.y -= 5.0
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): return
@@ -83,7 +96,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y -= 0.2 * delta # gravity
 	move_and_collide(velocity)
 	
-	var camera_target_pos = global_position - (global_basis.z if !Input.is_action_pressed("pan_camera") else Vector3.ZERO)
+	var camera_target_pos = global_position - (global_basis.z if !Input.is_action_pressed("pan_camera") else Vector3(0.001, 0.001, 0.001))
 	var camera_target_look_pos = global_position
 	
 	if Input.is_action_pressed("pan_camera"):
