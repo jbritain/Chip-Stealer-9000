@@ -92,21 +92,6 @@ properties/4/path = NodePath("Camera3D/WaterPistol:position")
 properties/4/spawn = true
 properties/4/replication_mode = 1
 
-[sub_resource type="Animation" id="Animation_2iw58"]
-resource_name = "Shoot"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/WaterPistol:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(0.125, 1),
-"update": 0,
-"values": [Vector3(0.432842, 0, 0), Vector3(0, 0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_y1bt5"]
 length = 0.001
 tracks/0/type = "value"

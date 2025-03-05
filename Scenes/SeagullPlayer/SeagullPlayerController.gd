@@ -136,9 +136,13 @@ func get_stunned():
 	if !is_multiplayer_authority():
 		rpc_id(int(name), "get_stunned")
 		return
+		
+	print("stunned")
 	stunned = true
 	
+	get_tree().root.get_node("GameHud/StunnedText").visible = true
 	await get_tree().create_timer(respawn_delay).timeout
+	get_tree().root.get_node("GameHud/StunnedText").visible = false
 	
 	stunned = false
 	global_position.y += 100.0

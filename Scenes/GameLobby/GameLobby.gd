@@ -6,4 +6,11 @@ func _process(delta: float) -> void:
 
 func _on_start_game_button_pressed() -> void:
 	if multiplayer.is_server():
-		GlobalHandler.server_start_round()
+		GlobalHandler.start_game()
+
+
+func _on_game_timer_timeout() -> void:
+	if !multiplayer.is_server():
+		return
+		
+	GlobalHandler.server_end_game()
