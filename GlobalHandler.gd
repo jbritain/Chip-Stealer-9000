@@ -189,7 +189,6 @@ func client_start_round(spawn_pos, delivery_pos):
 	var hud = get_tree().get_root().find_child("GameHud",true,false)
 	hud.reset_killfeed()
 	hud.reset_mission()
-	pass
 	if is_seagull:
 		player.position = delivery_pos
 		player.position.y += 100
