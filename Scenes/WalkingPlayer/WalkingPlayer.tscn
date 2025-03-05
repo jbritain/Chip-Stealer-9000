@@ -122,6 +122,21 @@ tracks/0/keys = {
 "values": [Vector3(0.432842, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_2iw58"]
+resource_name = "Shoot"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D/Waterpistol:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.125, 1),
+"update": 0,
+"values": [Vector3(0.432842, 0, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_omqxt"]
 _data = {
 &"RESET": SubResource("Animation_y1bt5"),
@@ -155,3 +170,19 @@ transform = Transform3D(-0.05, 0, -4.37114e-09, 0, 0.05, 0, 4.37114e-09, 0, -0.0
 libraries = {
 &"": SubResource("AnimationLibrary_omqxt")
 }
+
+[node name="MinimapSubViewport" type="SubViewport" parent="."]
+size_2d_override = Vector2i(200, 200)
+
+[node name="MinimapCamera" type="Camera3D" parent="MinimapSubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.27267, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MinimapRect" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0

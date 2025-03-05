@@ -1,6 +1,8 @@
 extends CharacterBody3D
 
-#@export var camera: Camera3D
+@onready var minimap_camera = $MinimapSubViewport/MinimapCamera
+@onready var minimap_subviewport = $MinimapSubViewport
+@onready var minimap_rect = $CanvasLayer/MinimapRect
 
 const SPEED = 20.0
 const JUMP_VELOCITY = 4.5
@@ -27,10 +29,29 @@ func _enter_tree():
 func _ready():
 	self.add_to_group("student")
 
-	if not is_multiplayer_authority(): return
-	
+	if not is_multiplayer_authority(): 
+		$CanvasLayer.visible = false
+		return
+		
 	$Camera3D.current = true
+	setup_minimap()
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+func setup_minimap():
+	minimap_subviewport.world_3d = get_world_3d()
+	minimap_camera.current = true
+	minimap_camera.rotate(Vector3(1,0,0),deg_to_rad(-90))
+	minimap_subviewport.size = Vector2(500, 500)
+	minimap_rect.texture = minimap_subviewport.get_texture()
+	
+	var player_dot = ColorRect.new()
+	player_dot.color = Color(1,0,0)
+	player_dot.size = Vector2(10,10)
+	minimap_rect.add_child(player_dot)
+	player_dot.position = Vector2(250,250)
+	
+
+	
 func _input(event):
 	if not is_multiplayer_authority(): return
 	
@@ -77,6 +98,8 @@ func _physics_process(delta: float) -> void:
 		velocity.z = 0.0
 
 	move_and_slide()
+	minimap_camera.global_transform.origin = global_transform.origin + Vector3(0, 100, 0)
+
 	
 func deliver_chips():
 	if not is_multiplayer_authority(): 
