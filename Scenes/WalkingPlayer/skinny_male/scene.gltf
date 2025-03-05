@@ -1,146 +1,244 @@
 {
-  "accessors": [
-    {
-      "bufferView": 1,
-      "componentType": 5126,
-      "count": 11714,
-      "max": [
-        6.880228519439697,
-        2.240797996520996,
-        26.26085090637207
-      ],
-      "min": [
-        -6.429683208465576,
-        -2.5211853981018066,
-        -0.09569898247718811
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 1,
-      "byteOffset": 140568,
-      "componentType": 5126,
-      "count": 11714,
-      "max": [
-        0.9999850392341614,
-        0.9999498128890991,
-        0.9997757077217102
-      ],
-      "min": [
-        -0.9999551177024841,
-        -0.9999813437461853,
-        -0.9999886751174927
-      ],
-      "type": "VEC3"
-    },
-    {
-      "bufferView": 0,
-      "componentType": 5125,
-      "count": 67962,
-      "type": "SCALAR"
-    }
-  ],
-  "asset": {
-    "extras": {
-      "author": "Teo (https://sketchfab.com/szilla.mini)",
-      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
-      "source": "https://sketchfab.com/3d-models/skinny-male-5ecb878ed6f04496a3a4f157bb7a1ad9",
-      "title": "Skinny Male"
-    },
-    "generator": "Sketchfab-16.31.0",
-    "version": "2.0"
-  },
-  "bufferViews": [
-    {
-      "buffer": 0,
-      "byteLength": 271848,
-      "name": "floatBufferViews",
-      "target": 34963
-    },
-    {
-      "buffer": 0,
-      "byteLength": 281136,
-      "byteOffset": 271848,
-      "byteStride": 12,
-      "name": "floatBufferViews",
-      "target": 34962
-    }
-  ],
-  "buffers": [
-    {
-      "byteLength": 552984,
-      "uri": "scene.bin"
-    }
-  ],
-  "materials": [
-    {
-      "doubleSided": true,
-      "name": "material_0",
-      "pbrMetallicRoughness": {
-        "metallicFactor": 0.0,
-        "roughnessFactor": 0.6
-      }
-    }
-  ],
-  "meshes": [
-    {
-      "name": "Object_0",
-      "primitives": [
-        {
-          "attributes": {
-            "NORMAL": 1,
-            "POSITION": 0
-          },
-          "indices": 2,
-          "material": 0,
-          "mode": 4
-        }
-      ]
-    }
-  ],
-  "nodes": [
-    {
-      "children": [
-        1
-      ],
-      "matrix": [
-        1.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        2.220446049250313e-16,
-        -1.0,
-        0.0,
-        0.0,
-        1.0,
-        2.220446049250313e-16,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        1.0
-      ],
-      "name": "Sketchfab_model"
-    },
-    {
-      "children": [
-        2
-      ],
-      "name": "skinny male .obj.cleaner.materialmerger.gles"
-    },
-    {
-      "mesh": 0,
-      "name": "Object_2"
-    }
-  ],
-  "scene": 0,
-  "scenes": [
-    {
-      "name": "Sketchfab_Scene",
-      "nodes": [
-        0
-      ]
-    }
-  ]
+	"asset":{
+		"generator":"Khronos glTF Blender I/O v4.3.47",
+		"version":"2.0"
+	},
+	"scene":0,
+	"scenes":[
+		{
+			"name":"Scene",
+			"nodes":[
+				2,
+				3
+			]
+		}
+	],
+	"nodes":[
+		{
+			"mesh":0,
+			"name":"Object_2"
+		},
+		{
+			"children":[
+				0
+			],
+			"name":"skinny male .obj.cleaner.materialmerger.gles"
+		},
+		{
+			"children":[
+				1
+			],
+			"name":"Sketchfab_model",
+			"rotation":[
+				-0.70710688829422,
+				0,
+				0,
+				0.7071066498756409
+			],
+			"scale":[
+				1,
+				1,
+				0.5463926792144775
+			]
+		},
+		{
+			"name":"Mesh",
+			"scale":[
+				1,
+				0.5463926196098328,
+				1
+			]
+		}
+	],
+	"materials":[
+		{
+			"doubleSided":true,
+			"name":"material_0",
+			"pbrMetallicRoughness":{
+				"metallicFactor":0,
+				"roughnessFactor":0.6000000238418579
+			}
+		},
+		{
+			"doubleSided":true,
+			"name":"Material.001",
+			"pbrMetallicRoughness":{
+				"baseColorTexture":{
+					"index":0
+				},
+				"metallicFactor":0,
+				"roughnessFactor":0.5
+			}
+		}
+	],
+	"meshes":[
+		{
+			"name":"Object_0",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":0,
+						"NORMAL":1,
+						"TEXCOORD_0":2
+					},
+					"indices":3,
+					"material":0
+				},
+				{
+					"attributes":{
+						"POSITION":4,
+						"NORMAL":5,
+						"TEXCOORD_0":6
+					},
+					"indices":7,
+					"material":1
+				}
+			]
+		}
+	],
+	"textures":[
+		{
+			"sampler":0,
+			"source":0
+		}
+	],
+	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"12",
+			"uri":"12.png"
+		}
+	],
+	"accessors":[
+		{
+			"bufferView":0,
+			"componentType":5126,
+			"count":11652,
+			"max":[
+				6.880228519439697,
+				2.240797996520996,
+				26.26085090637207
+			],
+			"min":[
+				-6.429683208465576,
+				-2.5211853981018066,
+				-0.09569898247718811
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":1,
+			"componentType":5126,
+			"count":11652,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":2,
+			"componentType":5126,
+			"count":11652,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":3,
+			"componentType":5123,
+			"count":66720,
+			"type":"SCALAR"
+		},
+		{
+			"bufferView":4,
+			"componentType":5126,
+			"count":247,
+			"max":[
+				0.9544691443443298,
+				0.7491503357887268,
+				26.24220085144043
+			],
+			"min":[
+				-1.0405486822128296,
+				-1.7398773431777954,
+				23.272510528564453
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":5,
+			"componentType":5126,
+			"count":247,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":6,
+			"componentType":5126,
+			"count":247,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":7,
+			"componentType":5123,
+			"count":1242,
+			"type":"SCALAR"
+		}
+	],
+	"bufferViews":[
+		{
+			"buffer":0,
+			"byteLength":139824,
+			"byteOffset":0,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":139824,
+			"byteOffset":139824,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":93216,
+			"byteOffset":279648,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":133440,
+			"byteOffset":372864,
+			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":2964,
+			"byteOffset":506304,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":2964,
+			"byteOffset":509268,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":1976,
+			"byteOffset":512232,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":2484,
+			"byteOffset":514208,
+			"target":34963
+		}
+	],
+	"samplers":[
+		{
+			"magFilter":9729,
+			"minFilter":9987
+		}
+	],
+	"buffers":[
+		{
+			"byteLength":516692,
+			"uri":"scene1.bin"
+		}
+	]
 }
