@@ -53,7 +53,6 @@ func _input(event):
 		mouse_position_since_clicked += event.relative / get_viewport().get_visible_rect().size
 		mouse_position_since_clicked.x = clamp(mouse_position_since_clicked.x, -PI, PI)
 		mouse_position_since_clicked.y = clamp(mouse_position_since_clicked.y, -PI * 0.48, PI * 0.48)
-		print(mouse_position_since_clicked)
 		
 	if event.is_action_pressed("bring_forth_jobby"):
 		rpc_id(1, "server_bring_forth_jobby")
@@ -137,12 +136,10 @@ func get_stunned():
 	if !is_multiplayer_authority():
 		rpc_id(int(name), "get_stunned")
 		return
-	print("I got stunned")
 	stunned = true
 	
 	await get_tree().create_timer(respawn_delay).timeout
 	
-	print("I got up")
 	stunned = false
 	global_position.y += 100.0
 
@@ -152,9 +149,7 @@ func get_stunned():
 		
 func _on_can_grab_chips(body: Node3D):
 	if not is_multiplayer_authority(): return
-	print("collison")
 	if body.is_in_group("student") and body.has_chips:
-		print("its a student and they have chips!")
 		self.can_grab = true
 		self.grabbable_student = body
 		

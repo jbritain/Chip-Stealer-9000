@@ -39,6 +39,11 @@ func add_kill(killfeed):
 func add_mission(mission):
 	print("adding mission")
 	var mission_label = Label.new()
+	
+	if GlobalHandler.is_seagull:
+		mission = "Stop the students getting their chips from " + mission + "!"
+	else:
+		mission = "Get your chips from " + mission + " before the seagulls nick them!"
 	mission_label.text = mission
 	
 	mission_container.add_child(mission_label)

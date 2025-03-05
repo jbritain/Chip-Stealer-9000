@@ -98,9 +98,9 @@ func handle_disconnected_peer(peer_id):
 	
 func announce_chips_stolen():
 	if multiplayer.is_server():
-		server_chips_stolen()
+		server_chips_stolen(multiplayer.get_unique_id())
 	else:
-		rpc_id(1, "server_chips_stolen") # apparently 1 is always server indeed it is alan
+		rpc_id(1, "server_chips_stolen", multiplayer.get_unique_id()) # apparently 1 is always server indeed it is alan
 		
 func announce_chips_delivered():
 	if multiplayer.is_server():
@@ -110,25 +110,23 @@ func announce_chips_delivered():
 
 # This function should only run on the server i think 
 # yes alan that is correct
-@rpc("any_peer", "reliable")		
-func server_chips_stolen():
+@rpc("any_peer", "reliable", "call_local")		
+func server_chips_stolen(peer_id):
 	if not multiplayer.is_server():
 		print("server chips stolen but not authority")
 		return
-		
-	var peer_id = multiplayer.get_remote_sender_id()
-	player_chips[peer_id] = false
 	
-	print("chips stolen function")
+	player_chips[peer_id] = false
+	print("%s lost chips" % [peer_id])
+	
 	seagull_score += 1
-	print("seagull score increase to",seagull_score)
 	rpc("client_update_score", student_score, seagull_score)
 	client_update_score(student_score,seagull_score)
 
 	var no_chips_left = true
 	for player_id in player_chips.keys():
 		if player_chips[player_id]:
-			print("player: %s" % [player_id])
+			print("player: %s still has chips" % [player_id])
 			no_chips_left = false
 			break
 			
@@ -138,18 +136,14 @@ func server_chips_stolen():
 		
 @rpc("any_peer", "reliable")
 func server_chips_delivered():
-	print(" i have received the chips delivered")
 	if not multiplayer.is_server():
-		print("i am not the server")
 		return
 	
 	
 	var peer_id = multiplayer.get_remote_sender_id()
 	if peer_id == 0:
-		peer_id = 1
+		peer_id = multiplayer.get_unique_id()
 	player_chips[peer_id] = false
-	
-	print("chips delivered function")
 	student_score += 1
 	print("student score increase to ", student_score)
 
@@ -177,10 +171,6 @@ func server_start_round():
 	# give all walking players chips
 	rpc("client_get_chips")
 	
-	# Set scores back to 0
-	student_score = 0
-	seagull_score = 0
-	
 	rpc("client_start_round")
 	
 	# put a chip delivery point at a random cafe
@@ -191,12 +181,8 @@ func server_start_round():
 	var student_delivery_points = get_tree().get_nodes_in_group("student_delivery_points")
 	var random_delivery_point = student_delivery_points.pick_random()
 	print("placing chip delivery point at " + random_delivery_point.name)
-	var mission_string
-	if is_seagull:
-		mission_string = "Steal the students' chips  before they deliver them from %s to %s!" % [random_spawn_point.name,random_delivery_point.name]
-	else:
-		mission_string = "Get your food from %s to %s... hurry before the seagulls nick it!" % [random_spawn_point.name,random_delivery_point.name]
-	
+	var mission_string = "%s to %s" % [random_spawn_point.name,random_delivery_point.name]
+
 	chip_delivery_point.position = random_delivery_point.position
 	var students = get_tree().get_nodes_in_group("student")
 	for student in students:
