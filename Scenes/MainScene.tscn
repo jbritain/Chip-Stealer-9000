@@ -30,3 +30,6 @@ spawn_path = NodePath("..")
 stream = ExtResource("2_tr2i4")
 volume_db = -11.243
 autoplay = true
+
+[node name="MinimapSubViewport" type="SubViewport" parent="."]
+size = Vector2i(200, 200)

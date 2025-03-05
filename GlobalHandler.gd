@@ -195,7 +195,10 @@ func server_start_round():
 @rpc("any_peer","reliable","call_local")
 func client_start_round(spawn_pos, delivery_pos):
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
 	var player = get_current_player()
+	if player.is_in_group("student"):
+		player.setup_minimap()
 	var hud = get_tree().get_root().find_child("GameHud",true,false)
 	get_tree().get_root().get_node("MainScene/UI/GameLobby").hide()
 	hud.show()
