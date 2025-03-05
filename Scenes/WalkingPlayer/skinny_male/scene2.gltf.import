@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bja4l1n4glgdl"
-path="res://.godot/imported/scene.gltf-66505d1cb8c57529851b3c9bb31d6474.scn"
+uid="uid://bt5jqlfhrxt3e"
+path="res://.godot/imported/scene2.gltf-2c5c4bfe6676646d8d0028e06d1e6e46.scn"
 
 [deps]
 
-source_file="res://Scenes/WalkingPlayer/skinny_male/scene.gltf"
-dest_files=["res://.godot/imported/scene.gltf-66505d1cb8c57529851b3c9bb31d6474.scn"]
+source_file="res://Scenes/WalkingPlayer/skinny_male/scene2.gltf"
+dest_files=["res://.godot/imported/scene2.gltf-2c5c4bfe6676646d8d0028e06d1e6e46.scn"]
 
 [params]
 
