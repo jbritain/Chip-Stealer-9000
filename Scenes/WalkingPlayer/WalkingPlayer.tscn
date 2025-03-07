@@ -112,7 +112,7 @@ resource_name = "Shoot"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/Waterpistol:rotation")
+tracks/0/path = NodePath("Camera3D/WaterPistol:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -146,6 +146,7 @@ mesh = SubResource("ArrayMesh_omqxt")
 skeleton = NodePath("../..")
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+visible = false
 target_position = Vector3(0, 0, -1000)
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
